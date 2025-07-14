@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lucent-UI Pure Demo</title>
+  <style>
+    /* Reset minimal */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div style="
+      min-height: 100vh;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+    ">
+      <div style="
+        max-width: 600px;
+        background: rgba(255,255,255,0.1);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255,255,255,0.2);
+        border-radius: 1rem;
+        padding: 3rem;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+      ">
+        <h1 style="
+          font-size: 3rem;
+          font-weight: 800;
+          margin-bottom: 1rem;
+          background: linear-gradient(45deg, #fff, #f0f9ff);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        ">
+          ✨ Lucent-UI Pure
+        </h1>
+        <p style="
+          font-size: 1.25rem;
+          margin-bottom: 2rem;
+          opacity: 0.9;
+          line-height: 1.6;
+        ">
+          Interface ultra-professionnelle construite avec des styles CSS purs intégrés.<br>
+          <strong>Zéro dépendance Tailwind.</strong>
+        </p>
+        
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+          <button style="
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+          " 
+          onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 25px rgba(0,0,0,0.3)'"
+          onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(0,0,0,0.2)'"
+          onclick="alert('React demo en cours de construction!')">
+            🚀 Voir la Demo React
+          </button>
+          
+          <button style="
+            background: transparent;
+            border: 2px solid white;
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+          "
+          onmouseover="this.style.background='white'; this.style.color='#667eea'"
+          onmouseout="this.style.background='transparent'; this.style.color='white'"
+          onclick="window.open('https://github.com/lucent-ui/pure', '_blank')">
+            📖 Documentation
+          </button>
+        </div>
+
+        <div style="
+          margin-top: 3rem;
+          padding-top: 2rem;
+          border-top: 1px solid rgba(255,255,255,0.2);
+        ">
+          <h3 style="font-size: 1.5rem; margin-bottom: 1rem;">🎯 Avantages</h3>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; text-align: center;">
+            <div>
+              <div style="font-size: 2rem; margin-bottom: 0.5rem;">⚡</div>
+              <div style="font-weight: 600;">Ultra Léger</div>
+              <div style="font-size: 0.875rem; opacity: 0.8;">65% plus petit</div>
+            </div>
+            <div>
+              <div style="font-size: 2rem; margin-bottom: 0.5rem;">🚫</div>
+              <div style="font-weight: 600;">Zero Config</div>
+              <div style="font-size: 0.875rem; opacity: 0.8;">Aucun setup CSS</div>
+            </div>
+            <div>
+              <div style="font-size: 2rem; margin-bottom: 0.5rem;">💎</div>
+              <div style="font-weight: 600;">Pro Quality</div>
+              <div style="font-size: 0.875rem; opacity: 0.8;">Design premium</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="
+          margin-top: 2rem;
+          padding: 1rem;
+          background: rgba(0,0,0,0.2);
+          border-radius: 0.5rem;
+          text-align: left;
+          font-family: 'Monaco', 'Menlo', monospace;
+          font-size: 0.875rem;
+        ">
+          <div style="color: #64b5f6; margin-bottom: 0.5rem;">// Code ultra-simplifié</div>
+          <div><span style="color: #81c784;">lucent</span>()
+            .<span style="color: #ffb74d;">theme</span>(<span style="color: #f48fb1;">'crystal'</span>)
+            .<span style="color: #ffb74d;">card</span>(<span style="color: #f48fb1;">'premium'</span>)
+            .<span style="color: #ffb74d;">heading</span>(<span style="color: #f48fb1;">'Hello Pure!'</span>)
+            .<span style="color: #ffb74d;">button</span>(<span style="color: #f48fb1;">'gradient'</span>, <span style="color: #f48fb1;">'Amazing'</span>)
+            .<span style="color: #ffb74d;">render</span>()
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

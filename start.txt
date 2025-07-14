@@ -1,0 +1,441 @@
+// premium-ui-kit/src/index.ts
+export * from './components';
+export * from './hooks';
+export * from './utils';
+export * from './providers';
+export * from './types';
+
+// premium-ui-kit/src/types/index.ts
+export interface ThemeConfig {
+  mode: 'light' | 'dark' | 'auto';
+  primaryColor?: string;
+  secondaryColor?: string;
+  borderRadius?: 'none' | 'sm' | 'md' | 'lg' | 'xl';
+  animation?: 'none' | 'subtle' | 'smooth' | 'energetic';
+}
+
+export interface ComponentProps {
+  variant?: 'primary' | 'secondary' | 'ghost' | 'outline';
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+  loading?: boolean;
+  disabled?: boolean;
+  className?: string;
+}
+
+// premium-ui-kit/src/providers/ThemeProvider.tsx
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { ThemeConfig } from '../types';
+
+const ThemeContext = createContext<{
+  theme: ThemeConfig;
+  setTheme: (theme: ThemeConfig) => void;
+}>({
+  theme: { mode: 'auto', animation: 'smooth', borderRadius: 'lg' },
+  setTheme: () => {},
+});
+
+export const useTheme = () => useContext(ThemeContext);
+
+export const ThemeProvider: React.FC<{ children: React.ReactNode; config?: ThemeConfig }> = ({ 
+  children, 
+  config = { mode: 'auto', animation: 'smooth', borderRadius: 'lg' } 
+}) => {
+  const [theme, setTheme] = useState<ThemeConfig>(config);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    
+    // Auto-detect system theme
+    if (theme.mode === 'auto') {
+      const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      root.classList.toggle('dark', isDark);
+    } else {
+      root.classList.toggle('dark', theme.mode === 'dark');
+    }
+
+    // Apply CSS variables
+    if (theme.primaryColor) {
+      root.style.setProperty('--primary-color', theme.primaryColor);
+    }
+    if (theme.secondaryColor) {
+      root.style.setProperty('--secondary-color', theme.secondaryColor);
+    }
+  }, [theme]);
+
+  return (
+    <ThemeContext.Provider value={{ theme, setTheme }}>
+      {children}
+    </ThemeContext.Provider>
+  );
+};
+
+// premium-ui-kit/src/components/Button.tsx
+import React, { forwardRef } from 'react';
+import { ComponentProps } from '../types';
+import { cn } from '../utils';
+import { Loader2 } from 'lucide-react';
+
+interface ButtonProps extends ComponentProps, React.ButtonHTMLAttributes<HTMLButtonElement> {
+  children: React.ReactNode;
+  fullWidth?: boolean;
+}
+
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
+  variant = 'primary',
+  size = 'md',
+  loading = false,
+  disabled = false,
+  fullWidth = false,
+  className,
+  children,
+  ...props
+}, ref) => {
+  const baseStyles = 'inline-flex items-center justify-center font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2';
+  
+  const variants = {
+    primary: 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 focus:ring-blue-500',
+    secondary: 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100 hover:bg-gray-300 dark:hover:bg-gray-600',
+    ghost: 'hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300',
+    outline: 'border-2 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800'
+  };
+
+  const sizes = {
+    xs: 'px-2.5 py-1.5 text-xs rounded-md',
+    sm: 'px-3 py-2 text-sm rounded-md',
+    md: 'px-4 py-2.5 text-sm rounded-lg',
+    lg: 'px-5 py-3 text-base rounded-lg',
+    xl: 'px-6 py-3.5 text-base rounded-xl'
+  };
+
+  return (
+    <button
+      ref={ref}
+      className={cn(
+        baseStyles,
+        variants[variant],
+        sizes[size],
+        fullWidth && 'w-full',
+        (disabled || loading) && 'opacity-50 cursor-not-allowed',
+        className
+      )}
+      disabled={disabled || loading}
+      {...props}
+    >
+      {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+      {children}
+    </button>
+  );
+});
+
+Button.displayName = 'Button';
+
+// premium-ui-kit/src/components/Card.tsx
+import React from 'react';
+import { cn } from '../utils';
+
+interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
+  hover?: boolean;
+  glass?: boolean;
+  gradient?: boolean;
+}
+
+export const Card: React.FC<CardProps> = ({ 
+  hover = true, 
+  glass = false, 
+  gradient = false,
+  className, 
+  children, 
+  ...props 
+}) => {
+  return (
+    <div
+      className={cn(
+        'rounded-xl p-6 transition-all duration-300',
+        glass ? 'bg-white/10 dark:bg-black/20 backdrop-blur-lg border border-white/20 dark:border-white/10' :
+        gradient ? 'bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900' :
+        'bg-white dark:bg-gray-800 shadow-lg',
+        hover && 'hover:shadow-xl hover:-translate-y-1',
+        className
+      )}
+      {...props}
+    >
+      {children}
+    </div>
+  );
+};
+
+// premium-ui-kit/src/components/Input.tsx
+import React, { forwardRef } from 'react';
+import { cn } from '../utils';
+
+interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  label?: string;
+  error?: string;
+  icon?: React.ReactNode;
+}
+
+export const Input = forwardRef<HTMLInputElement, InputProps>(({
+  label,
+  error,
+  icon,
+  className,
+  ...props
+}, ref) => {
+  return (
+    <div className="w-full">
+      {label && (
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          {label}
+        </label>
+      )}
+      <div className="relative">
+        {icon && (
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            {icon}
+          </div>
+        )}
+        <input
+          ref={ref}
+          className={cn(
+            'w-full rounded-lg border border-gray-300 dark:border-gray-600',
+            'bg-white dark:bg-gray-800 px-3 py-2.5',
+            'focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent',
+            'transition-all duration-200',
+            icon && 'pl-10',
+            error && 'border-red-500 focus:ring-red-500',
+            className
+          )}
+          {...props}
+        />
+      </div>
+      {error && (
+        <p className="mt-1 text-sm text-red-500">{error}</p>
+      )}
+    </div>
+  );
+});
+
+Input.displayName = 'Input';
+
+// premium-ui-kit/src/components/Layout.tsx
+import React from 'react';
+import { cn } from '../utils';
+
+interface LayoutProps {
+  children: React.ReactNode;
+  sidebar?: React.ReactNode;
+  header?: React.ReactNode;
+  className?: string;
+}
+
+export const Layout: React.FC<LayoutProps> = ({ children, sidebar, header, className }) => {
+  return (
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+      {header && (
+        <header className="sticky top-0 z-50 bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg border-b border-gray-200 dark:border-gray-700">
+          {header}
+        </header>
+      )}
+      <div className="flex">
+        {sidebar && (
+          <aside className="w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 min-h-[calc(100vh-64px)]">
+            {sidebar}
+          </aside>
+        )}
+        <main className={cn('flex-1 p-6', className)}>
+          {children}
+        </main>
+      </div>
+    </div>
+  );
+};
+
+// premium-ui-kit/src/hooks/useAnimation.ts
+import { useEffect, useRef } from 'react';
+
+interface AnimationOptions {
+  threshold?: number;
+  rootMargin?: string;
+  animationClass?: string;
+}
+
+export const useAnimation = (options: AnimationOptions = {}) => {
+  const ref = useRef<HTMLElement>(null);
+  const {
+    threshold = 0.1,
+    rootMargin = '0px',
+    animationClass = 'animate-fade-in'
+  } = options;
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add(animationClass);
+          }
+        });
+      },
+      { threshold, rootMargin }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => observer.disconnect();
+  }, [threshold, rootMargin, animationClass]);
+
+  return ref;
+};
+
+// premium-ui-kit/src/hooks/useOptimizedImage.ts
+import { useState, useEffect } from 'react';
+
+interface ImageOptions {
+  src: string;
+  placeholder?: string;
+  quality?: number;
+}
+
+export const useOptimizedImage = ({ src, placeholder, quality = 75 }: ImageOptions) => {
+  const [imageSrc, setImageSrc] = useState(placeholder || '');
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const img = new Image();
+    img.src = src;
+    img.onload = () => {
+      setImageSrc(src);
+      setLoading(false);
+    };
+  }, [src]);
+
+  return { src: imageSrc, loading };
+};
+
+// premium-ui-kit/src/utils/index.ts
+export const cn = (...classes: (string | undefined | null | false)[]) => {
+  return classes.filter(Boolean).join(' ');
+};
+
+export const generateId = () => {
+  return Math.random().toString(36).substring(2) + Date.now().toString(36);
+};
+
+export const debounce = <T extends (...args: any[]) => any>(
+  func: T,
+  wait: number
+): ((...args: Parameters<T>) => void) => {
+  let timeout: NodeJS.Timeout;
+  return (...args: Parameters<T>) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func(...args), wait);
+  };
+};
+
+// premium-ui-kit/src/utils/performance.ts
+export const lazyLoad = (importFunc: () => Promise<any>) => {
+  return React.lazy(importFunc);
+};
+
+export const preloadImage = (src: string): Promise<void> => {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve();
+    img.onerror = reject;
+    img.src = src;
+  });
+};
+
+export const optimizeRender = (Component: React.ComponentType<any>) => {
+  return React.memo(Component);
+};
+
+// premium-ui-kit/package.json
+{
+  "name": "premium-ui-kit",
+  "version": "1.0.0",
+  "description": "A premium React UI kit with automatic styling and optimizations",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc && vite build",
+    "dev": "vite",
+    "test": "vitest",
+    "lint": "eslint src --ext ts,tsx"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
+  "dependencies": {
+    "lucide-react": "^0.263.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "@vitejs/plugin-react": "^4.0.0",
+    "autoprefixer": "^10.4.0",
+    "postcss": "^8.4.0",
+    "tailwindcss": "^3.3.0",
+    "typescript": "^5.0.0",
+    "vite": "^4.0.0"
+  }
+}
+
+// premium-ui-kit/tailwind.config.js
+module.exports = {
+  content: ['./src/**/*.{ts,tsx}'],
+  darkMode: 'class',
+  theme: {
+    extend: {
+      animation: {
+        'fade-in': 'fadeIn 0.5s ease-in-out',
+        'slide-up': 'slideUp 0.3s ease-out',
+        'scale-in': 'scaleIn 0.2s ease-out',
+      },
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+        slideUp: {
+          '0%': { transform: 'translateY(10px)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '1' },
+        },
+        scaleIn: {
+          '0%': { transform: 'scale(0.95)', opacity: '0' },
+          '100%': { transform: 'scale(1)', opacity: '1' },
+        },
+      },
+    },
+  },
+  plugins: [],
+};
+
+// Example usage:
+/*
+import { ThemeProvider, Layout, Button, Card, Input, useAnimation } from 'premium-ui-kit';
+
+function App() {
+  const animatedRef = useAnimation();
+
+  return (
+    <ThemeProvider config={{ mode: 'auto', animation: 'smooth' }}>
+      <Layout
+        header={<div className="p-4">My App</div>}
+        sidebar={<nav className="p-4">Navigation</nav>}
+      >
+        <Card glass ref={animatedRef}>
+          <h1 className="text-2xl font-bold mb-4">Welcome</h1>
+          <Input label="Email" type="email" placeholder="Enter your email" />
+          <Button variant="primary" className="mt-4">
+            Get Started
+          </Button>
+        </Card>
+      </Layout>
+    </ThemeProvider>
+  );
+}
+*/
