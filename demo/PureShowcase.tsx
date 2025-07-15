@@ -25,8 +25,6 @@ export function PureShowcase() {
       .card('glass').heading('Performance', 3).text('Styles CSS purs optimisés').end()
       .card('elevated').heading('Clean Code', 3).text('Zéro classe CSS externe').end()
       .card('premium').heading('Professional', 3).text('Qualité production ready').end()
-      .end()
-      .end()
       .render();
   }
 

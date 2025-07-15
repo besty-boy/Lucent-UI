@@ -56,15 +56,15 @@ export const LUCENT_THEMES: Record<string, LucentTheme> = {
       secondaryDark: '#d97706', // amber-600
       accent: '#10b981', // emerald-500
       background: '#fef2f9', // pink-50 custom
-      backgroundDark: '#1e1b34', // deep violet
+      backgroundDark: '#1a1625', // deeper violet
       surface: '#fdf4ff', // fuchsia-50
-      surfaceDark: '#3b3258', // darker violet
+      surfaceDark: '#2d2640', // better contrast violet
       text: '#1e1b34', // high-contrast dark
-      textDark: '#f2eaff', // high-contrast light
+      textDark: '#f8f4ff', // higher contrast light
       textSecondary: '#585279', // muted
-      textSecondaryDark: '#a89ecf', // muted light
+      textSecondaryDark: '#d1c4e9', // better contrast light
       border: '#e879f9', // fuchsia-400
-      borderDark: '#585279', // muted
+      borderDark: '#4a4069', // better contrast muted
       success: '#10b981',
       warning: '#f59e0b',
       error: '#ef4444',
@@ -74,7 +74,7 @@ export const LUCENT_THEMES: Record<string, LucentTheme> = {
       primary: 'linear-gradient(135deg, #d946ef 0%, #f59e0b 100%)',
       secondary: 'linear-gradient(135deg, #f59e0b 0%, #d946ef 100%)',
       background: 'linear-gradient(135deg, #fef2f9 0%, #fdf4ff 100%)',
-      backgroundDark: 'linear-gradient(135deg, #1e1b34 0%, #3b3258 100%)',
+      backgroundDark: 'linear-gradient(135deg, #1a1625 0%, #2d2640 100%)',
     },
     shadows: {
       sm: '0 1px 2px 0 rgba(217, 70, 239, 0.1)',
@@ -99,15 +99,15 @@ export const LUCENT_THEMES: Record<string, LucentTheme> = {
       secondaryDark: '#2563eb', // blue-600
       accent: '#f59e0b', // amber-500
       background: '#f0fdf4', // emerald-50
-      backgroundDark: '#0c141a', // dark slate blue
+      backgroundDark: '#0a1015', // deeper slate blue
       surface: '#ecfdf5', // emerald-100
-      surfaceDark: '#1a2c38', // darker slate blue
+      surfaceDark: '#152025', // better contrast slate blue
       text: '#064e3b', // emerald-900
       textDark: '#ecfdf5', // emerald-50
       textSecondary: '#047857', // emerald-700
       textSecondaryDark: '#a7f3d0', // emerald-200
       border: '#a7f3d0', // emerald-200
-      borderDark: '#1a2c38', // surface dark
+      borderDark: '#2a4a5c', // better contrast surface dark
       success: '#10b981',
       warning: '#f59e0b',
       error: '#ef4444',
@@ -117,7 +117,7 @@ export const LUCENT_THEMES: Record<string, LucentTheme> = {
       primary: 'linear-gradient(90deg, #10b981 0%, #3b82f6 25%, #8b5cf6 50%, #ec4899 75%, #10b981 100%)',
       secondary: 'linear-gradient(135deg, #3b82f6 0%, #10b981 50%, #06b6d4 100%)',
       background: 'conic-gradient(from 0deg at 50% 50%, #f0fdf4 0%, #ecfdf5 25%, #f0f9ff 50%, #fef3c7 75%, #f0fdf4 100%)',
-      backgroundDark: 'conic-gradient(from 0deg at 50% 50%, #0c141a 0%, #1a2c38 25%, #0c1629 50%, #1a2e05 75%, #0c141a 100%)',
+      backgroundDark: 'conic-gradient(from 0deg at 50% 50%, #0a1015 0%, #152025 25%, #0a1320 50%, #152205 75%, #0a1015 100%)',
     },
     shadows: {
       sm: '0 2px 6px 0 rgba(16, 185, 129, 0.2), 0 0 12px rgba(59, 130, 246, 0.1)',
@@ -147,8 +147,8 @@ export const LUCENT_THEMES: Record<string, LucentTheme> = {
       surfaceDark: '#1a1a1a',
       text: '#ffffff',
       textDark: '#ffffff',
-      textSecondary: '#b3b3b3', // lighter gray for readability
-      textSecondaryDark: '#b3b3b3',
+      textSecondary: '#e6e6e6', // much lighter gray for readability
+      textSecondaryDark: '#e6e6e6',
       border: '#ff0080',
       borderDark: '#ff0080',
       success: '#00ff00',
@@ -191,7 +191,7 @@ export const LUCENT_THEMES: Record<string, LucentTheme> = {
       text: '#1f2937', // gray-800
       textDark: '#f9fafb', // gray-50
       textSecondary: '#4b5563', // gray-600
-      textSecondaryDark: '#a0aec0', // lighter gray
+      textSecondaryDark: '#e2e8f0', // much lighter gray
       border: '#e5e7eb', // gray-200
       borderDark: '#2d3748', // even darker gray
       success: '#10b981',
@@ -233,8 +233,8 @@ export const LUCENT_THEMES: Record<string, LucentTheme> = {
       surfaceDark: '#1c1c1c',
       text: '#ffffff',
       textDark: '#ffffff',
-      textSecondary: '#cccccc', // lighter gray
-      textSecondaryDark: '#cccccc',
+      textSecondary: '#e6e6e6', // much lighter gray
+      textSecondaryDark: '#e6e6e6',
       border: '#404040',
       borderDark: '#404040',
       success: '#10b981',
@@ -271,9 +271,9 @@ export const LUCENT_THEMES: Record<string, LucentTheme> = {
       secondaryDark: '#bae6fd', // sky-200
       accent: '#06b6d4', // cyan-500
       background: '#f8fafc', // slate-50
-      backgroundDark: '#0f172a', // slate-900
+      backgroundDark: '#0c1419', // deeper slate-900
       surface: '#f1f5f9', // slate-100
-      surfaceDark: '#1e293b', // slate-800
+      surfaceDark: '#1a2332', // better contrast slate-800
       text: '#0f172a', // slate-900
       textDark: '#f1f5f9', // slate-100
       textSecondary: '#475569', // slate-600
@@ -362,8 +362,8 @@ export const LUCENT_THEMES: Record<string, LucentTheme> = {
       surfaceDark: '#1c1c1e', // iOS dark gray
       text: '#000000',
       textDark: '#ffffff',
-      textSecondary: '#636366', // darker gray for contrast
-      textSecondaryDark: '#a0a0a5', // lighter gray for contrast
+      textSecondary: '#8e8e93', // better contrast gray
+      textSecondaryDark: '#d1d1d6', // much lighter gray for contrast
       border: '#d1d1d6', // lighter separator
       borderDark: '#38383a', // iOS dark separator
       success: '#34c759', // iOS green
@@ -400,15 +400,15 @@ export const LUCENT_THEMES: Record<string, LucentTheme> = {
       secondaryDark: '#0891b2', // cyan-600
       accent: '#14b8a6', // teal-500
       background: '#f0f9ff', // sky-50
-      backgroundDark: '#0c2a4e', // darker blue
+      backgroundDark: '#0a1f3a', // deeper blue
       surface: '#e0f2fe', // sky-100
-      surfaceDark: '#1a3b69', // even darker blue
+      surfaceDark: '#142d4f', // better contrast blue
       text: '#083358', // high-contrast dark blue
       textDark: '#e0f2fe', // sky-100
       textSecondary: '#0369a1', // sky-700
       textSecondaryDark: '#7dd3fc', // sky-300
       border: '#bae6fd', // sky-200
-      borderDark: '#1a3b69', // surface dark
+      borderDark: '#2a4a7c', // better contrast surface dark
       success: '#059669', // emerald-600
       warning: '#d97706', // amber-600
       error: '#dc2626', // red-600
@@ -418,7 +418,7 @@ export const LUCENT_THEMES: Record<string, LucentTheme> = {
       primary: 'linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%)',
       secondary: 'linear-gradient(135deg, #06b6d4 0%, #14b8a6 100%)',
       background: 'linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%)',
-      backgroundDark: 'linear-gradient(135deg, #0c2a4e 0%, #1a3b69 100%)',
+      backgroundDark: 'linear-gradient(135deg, #0a1f3a 0%, #142d4f 100%)',
     },
     shadows: {
       sm: '0 1px 2px 0 rgba(14, 165, 233, 0.1)',
@@ -486,15 +486,15 @@ export const LUCENT_THEMES: Record<string, LucentTheme> = {
       secondaryDark: '#78350f', // amber-900
       accent: '#dc2626', // red-600
       background: '#f0fdf4', // green-50
-      backgroundDark: '#0f2e1a', // darker green
+      backgroundDark: '#0d2417', // deeper green
       surface: '#dcfce7', // green-100
-      surfaceDark: '#1a4a2e', // even darker green
+      surfaceDark: '#1a3c2b', // better contrast green
       text: '#14532d', // green-900
       textDark: '#dcfce7', // green-100
       textSecondary: '#166534', // green-800
       textSecondaryDark: '#4ade80', // green-400
       border: '#bbf7d0', // green-200
-      borderDark: '#1a4a2e', // surface dark
+      borderDark: '#2a5a3e', // better contrast surface dark
       success: '#16a34a', // green-600
       warning: '#d97706', // amber-600
       error: '#dc2626', // red-600
@@ -504,7 +504,7 @@ export const LUCENT_THEMES: Record<string, LucentTheme> = {
       primary: 'linear-gradient(135deg, #16a34a 0%, #92400e 100%)',
       secondary: 'linear-gradient(135deg, #92400e 0%, #16a34a 100%)',
       background: 'linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)',
-      backgroundDark: 'linear-gradient(135deg, #0f2e1a 0%, #1a4a2e 100%)',
+      backgroundDark: 'linear-gradient(135deg, #0d2417 0%, #1a3c2b 100%)',
     },
     shadows: {
       sm: '0 1px 2px 0 rgba(22, 163, 74, 0.1)',
@@ -534,8 +534,8 @@ export const LUCENT_THEMES: Record<string, LucentTheme> = {
       surfaceDark: '#111827',
       text: '#f9fafb', // gray-50
       textDark: '#f9fafb',
-      textSecondary: '#a1a1aa', // zinc-400 for better contrast
-      textSecondaryDark: '#a1a1aa',
+      textSecondary: '#d1d5db', // much lighter zinc for better contrast
+      textSecondaryDark: '#d1d5db',
       border: '#374151', // gray-700
       borderDark: '#374151',
       success: '#10b981', // emerald-500
@@ -620,8 +620,8 @@ export const LUCENT_THEMES: Record<string, LucentTheme> = {
       surfaceDark: '#1e1b4b',
       text: '#e0e7ff', // indigo-100
       textDark: '#e0e7ff',
-      textSecondary: '#a5b4fc', // indigo-300 for better contrast
-      textSecondaryDark: '#a5b4fc',
+      textSecondary: '#c7d2fe', // much lighter indigo for better contrast
+      textSecondaryDark: '#c7d2fe',
       border: '#3730a3', // indigo-800
       borderDark: '#3730a3',
       success: '#10b981',
@@ -701,9 +701,9 @@ export const LUCENT_THEMES: Record<string, LucentTheme> = {
       secondaryDark: '#0891b2', // cyan-600
       accent: '#8b5cf6', // violet-500
       background: '#ecfdf5', // emerald-50
-      backgroundDark: '#022c22', // emerald-950
+      backgroundDark: '#01201a', // deeper emerald-950
       surface: '#d1fae5', // emerald-100
-      surfaceDark: '#064e3b', // emerald-900
+      surfaceDark: '#053d2e', // better contrast emerald-900
       text: '#014737', // darker emerald
       textDark: '#d1fae5', // emerald-100
       textSecondary: '#047857', // emerald-700
@@ -719,7 +719,7 @@ export const LUCENT_THEMES: Record<string, LucentTheme> = {
       primary: 'linear-gradient(135deg, #059669 0%, #06b6d4 100%)',
       secondary: 'linear-gradient(135deg, #06b6d4 0%, #059669 100%)',
       background: 'linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%)',
-      backgroundDark: 'linear-gradient(135deg, #022c22 0%, #064e3b 100%)',
+      backgroundDark: 'linear-gradient(135deg, #01201a 0%, #053d2e 100%)',
     },
     shadows: {
       sm: '0 1px 2px 0 rgba(5, 150, 105, 0.1)',
@@ -744,9 +744,9 @@ export const LUCENT_THEMES: Record<string, LucentTheme> = {
       secondaryDark: '#64748b', // slate-500
       accent: '#0ea5e9', // sky-500
       background: '#f1f5f9', // slate-100
-      backgroundDark: '#0f172a', // slate-900
+      backgroundDark: '#0c1419', // deeper slate-900
       surface: '#f8fafc', // slate-50
-      surfaceDark: '#1e293b', // slate-800
+      surfaceDark: '#1a2332', // better contrast slate-800
       text: '#0f172a', // slate-900
       textDark: '#f1f5f9', // slate-100
       textSecondary: '#475569', // slate-600
@@ -762,7 +762,7 @@ export const LUCENT_THEMES: Record<string, LucentTheme> = {
       primary: 'linear-gradient(135deg, #475569 0%, #94a3b8 100%)',
       secondary: 'linear-gradient(135deg, #94a3b8 0%, #475569 100%)',
       background: 'linear-gradient(135deg, #f1f5f9 0%, #f8fafc 100%)',
-      backgroundDark: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
+      backgroundDark: 'linear-gradient(135deg, #0c1419 0%, #1a2332 100%)',
     },
     shadows: {
       sm: '0 1px 2px 0 rgba(71, 85, 105, 0.1)',

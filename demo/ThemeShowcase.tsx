@@ -1,8 +1,14 @@
 import React, { useState } from 'react';
 import { Body, Card, Button, Navbar, Input, Modal, Grid, Section, Container, Text, Flex } from '../src';
+import { AnimatedCard, MagicButton } from '../src';
 import { getThemeNames, LUCENT_THEMES } from '../src/themes';
 
-export function ThemeShowcase() {
+export interface ThemeShowcaseProps {
+  onNavigateToDocumentation?: () => void;
+}
+
+export function ThemeShowcase(props: ThemeShowcaseProps = {}) {
+  const { onNavigateToDocumentation = () => console.log('Navigation vers documentation') } = props;
   const [currentTheme, setCurrentTheme] = useState('velora');
   const [email, setEmail] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -64,7 +70,13 @@ function App() {
       {/* Header */}
       <Navbar logo="✨ Lucent-UI" variant="glass" sticky>
         <Flex gap="1rem" align="center">
-          <Button variant="ghost" size="sm">Documentation</Button>
+          <Button 
+            variant="ghost" 
+            size="sm"
+            onClick={onNavigateToDocumentation}
+          >
+            Documentation
+          </Button>
           <Button variant="ghost" size="sm">Themes</Button>
           <Button variant="primary" size="sm">Get Started</Button>
         </Flex>
@@ -86,7 +98,7 @@ function App() {
           size="5xl" 
           weight="bold" 
           gradient
-          style={{ marginBottom: '1rem' }}
+          style={{ marginBottom: '1rem', margin: '0 auto' }}
         >
           Build Professional Sites with 2-3 Components
         </Text>
@@ -105,7 +117,12 @@ function App() {
           <Button size="lg" variant="primary" corner={12}>
             npm install lucent-ui
           </Button>
-          <Button size="lg" variant="outline" corner={12}>
+          <Button 
+            size="lg" 
+            variant="outline" 
+            corner={12}
+            onClick={onNavigateToDocumentation}
+          >
             View Documentation
           </Button>
         </Flex>
@@ -123,7 +140,7 @@ function App() {
           >
             See It In Action
           </Text>
-          <Grid gap="2rem" minWidth="280px" mobileColumns={1}>
+          <Grid columns={2} gap="2rem" minWidth="250px" mobileColumns={1}>
             <Card padding="lg">
               <Text 
                 as="h3" 
@@ -140,10 +157,18 @@ function App() {
                   backgroundColor: 'var(--color-backgroundDark)', 
                   color: 'var(--color-textDark)',
                   fontSize: '0.9rem',
-                  overflow: 'auto'
+                  overflow: 'auto',
+                  overflowX: 'auto',
+                  maxWidth: '100%'
                 }}
               >
-                <pre style={{ margin: 0, fontSize: '0.8rem' }}>
+                <pre style={{ 
+                  margin: 0, 
+                  fontSize: '0.75rem',
+                  whiteSpace: 'pre-wrap',
+                  wordBreak: 'break-word',
+                  lineHeight: '1.4'
+                }}>
                   {codeExample}
                 </pre>
               </Card>
@@ -189,7 +214,7 @@ function App() {
           >
             Why Choose Lucent-UI?
           </Text>
-          <Grid gap="2rem" minWidth="280px" mobileColumns={1}>
+          <Grid columns={3} gap="2rem" minWidth="250px" mobileColumns={1}>
             {features.map((feature, index) => (
               <Card key={index} padding="lg" style={{ textAlign: 'center' }}>
                 <Text 
@@ -233,7 +258,7 @@ function App() {
             Click on any theme to see it in action
           </Text>
           
-          <Grid gap="1rem" minWidth="180px" mobileColumns={2} style={{ marginBottom: '3rem' }}>
+          <Grid columns={5} gap="1rem" minWidth="150px" mobileColumns={2} style={{ marginBottom: '3rem' }}>
             {themeNames.map((theme) => (
               <Button
                 key={theme}
@@ -242,7 +267,11 @@ function App() {
                 style={{ 
                   padding: '1rem',
                   textTransform: 'capitalize',
-                  fontSize: '0.9rem'
+                  fontSize: '0.85rem',
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  width: '100%'
                 }}
               >
                 {LUCENT_THEMES[theme]?.name || theme}
@@ -306,7 +335,7 @@ function App() {
             Personnalisation Ultra-Simple
           </Text>
           
-          <Grid gap="2rem" minWidth="280px" mobileColumns={1} style={{ marginBottom: '4rem' }}>
+          <Grid columns={3} gap="2rem" minWidth="250px" mobileColumns={1} style={{ marginBottom: '4rem' }}>
             <Card variant="glass" padding="lg" corner={16} shadow="lg">
               <Text 
                 as="h3" 
@@ -317,10 +346,10 @@ function App() {
                 Boutons Avancés
               </Text>
               <Flex direction="column" gap="1rem">
-                <Button corner={0} shadow="none">Corner 0</Button>
-                <Button corner={16} shadow="md">Corner 16</Button>
-                <Button corner={32} shadow="lg">Corner 32</Button>
-                <Button corner="50%" shadow="glow" glow>Glow Effect</Button>
+                <Button corner={0} shadow="none" style={{ width: '100%' }}>Corner 0</Button>
+                <Button corner={16} shadow="md" style={{ width: '100%' }}>Corner 16</Button>
+                <Button corner={32} shadow="lg" style={{ width: '100%' }}>Corner 32</Button>
+                <Button corner="50%" shadow="glow" glow style={{ width: '100%' }}>Glow Effect</Button>
               </Flex>
             </Card>
 
@@ -365,6 +394,7 @@ function App() {
                 variant="primary" 
                 corner={8} 
                 shadow="lg"
+                style={{ width: '100%' }}
                 onClick={() => setIsModalOpen(true)}
               >
                 Ouvrir Modal
@@ -448,11 +478,19 @@ function App() {
         </Text>
         <Flex gap="2rem" justify="center" wrap="wrap" mobileDirection="column" mobileAlign="center">
           <Button variant="ghost" size="sm">GitHub</Button>
-          <Button variant="ghost" size="sm">Documentation</Button>
+          <Button 
+            variant="ghost" 
+            size="sm"
+            onClick={onNavigateToDocumentation}
+          >
+            Documentation
+          </Button>
           <Button variant="ghost" size="sm">Examples</Button>
           <Button variant="ghost" size="sm">Support</Button>
         </Flex>
       </Section>
+
+      
 
       {/* Modal Demo */}
       <Modal

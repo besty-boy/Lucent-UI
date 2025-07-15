@@ -6,7 +6,9 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc && vite build",
+    "build:demo": "vite build --config vite.demo.config.ts",
     "dev": "vite --port 3000",
+    "dev:demo": "vite --config vite.demo.config.ts",
     "preview": "vite preview",
     "test": "vitest",
     "lint": "eslint src --ext ts,tsx"
