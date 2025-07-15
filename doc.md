@@ -96,7 +96,8 @@ export default App;
 
 ---
 
-## 🎨 Composants Principaux
+
+## 🎨 Composants Lucent-UI
 
 ### 1. Body - Composant Racine
 
@@ -112,17 +113,31 @@ Le composant `Body` est le conteneur principal qui gère automatiquement :
   autoDark={true}          // Mode sombre automatique
   responsive={true}        // Design responsive
   meta={{...}}            // Métadonnées SEO
-/>
+  config={customTheme}     // Thème custom optionnel
+>
+  {/* Votre contenu */}
+</Body>
 ```
 
-### 2. Button - Boutons Stylisés
+Props principales :
+- `theme` : nom du thème ou "custom"
+- `autoDark` : active le mode sombre auto
+- `responsive` : active le responsive
+- `meta` : métadonnées SEO
+- `config` : objet de configuration custom
+
+---
+
+### 2. Button - Boutons Stylisés et Avancés
 
 ```tsx
-// Boutons de base
+// Variants principaux
 <Button variant="primary">Primaire</Button>
 <Button variant="secondary">Secondaire</Button>
 <Button variant="ghost">Fantôme</Button>
 <Button variant="outline">Contour</Button>
+<Button variant="gradient">Dégradé</Button>
+<Button variant="glass">Effet verre</Button>
 
 // Tailles disponibles
 <Button size="xs">Très petit</Button>
@@ -135,25 +150,44 @@ Le composant `Body` est le conteneur principal qui gère automatiquement :
 <Button loading>Chargement...</Button>
 <Button disabled>Désactivé</Button>
 <Button fullWidth>Pleine largeur</Button>
+
+// Personnalisation avancée
+<Button corner={16} shadow="xl" glow leftIcon={<Icon />} rightIcon={<Icon />}>Bouton custom</Button>
+<Button corner="50%" variant="gradient" glow>Circulaire & Glow</Button>
 ```
 
-### 3. Personnalisation Corner Radius
+Props principales :
+- `variant` : "primary", "secondary", "ghost", "outline", "gradient", "glass"
+- `size` : "xs", "sm", "md", "lg", "xl"
+- `corner` : border-radius personnalisé (px, %, rem...)
+- `shadow` : "none", "md", "lg", "xl", "glow"
+- `glow` : effet lumineux
+- `leftIcon` / `rightIcon` : icônes à gauche/droite
+- `fullWidth`, `loading`, `disabled`
 
-**Nouvelle fonctionnalité !** Personnalisez le corner radius avec l'attribut `corner` :
+---
+
+### 3. Text - Texte Stylisé & Dégradé
+
+Permet d'afficher du texte avec taille, poids, couleur, alignement et effet dégradé.
 
 ```tsx
-// Valeurs numériques (en pixels)
-<Button corner={0}>Coins carrés</Button>
-<Button corner={10}>Coins arrondis 10px</Button>
-<Button corner={45}>Coins très arrondis</Button>
-
-// Valeurs CSS personnalisées
-<Button corner="50%">Bouton circulaire</Button>
-<Button corner="2rem">Coins en rem</Button>
-<Button corner="0.5em">Coins en em</Button>
+<Text size="2xl" weight="bold" color="primary">Titre principal</Text>
+<Text as="span" gradient>Texte en dégradé</Text>
+<Text align="center" color="muted">Texte centré et atténué</Text>
 ```
 
-### 4. Card - Conteneurs
+Props principales :
+- `as` : balise HTML (h1, h2, p, span...)
+- `size` : "xs" à "5xl"
+- `weight` : "normal", "medium", "semibold", "bold"
+- `color` : "default", "muted", "primary", "secondary"
+- `align` : "left", "center", "right"
+- `gradient` : effet texte dégradé
+
+---
+
+### 4. Card - Conteneur élégant
 
 ```tsx
 <Card>
@@ -162,6 +196,11 @@ Le composant `Body` est le conteneur principal qui gère automatiquement :
 </Card>
 ```
 
+Props principales :
+- `corner`, `shadow`, `className`, etc.
+
+---
+
 ### 5. Input - Champs de Saisie
 
 ```tsx
@@ -169,18 +208,66 @@ Le composant `Body` est le conteneur principal qui gère automatiquement :
   placeholder="Entrez votre texte" 
   variant="primary"
   size="md"
+  fullWidth
+  iconLeft={<Icon />}
+  iconRight={<Icon />}
 />
 ```
 
-### 6. Layout - Mise en Page
+Props principales :
+- `variant` : "primary", "secondary", "outline", "glass"
+- `size` : "xs" à "xl"
+- `corner`, `shadow`, `iconLeft`, `iconRight`, `fullWidth`
+
+---
+
+### 6. Flex - Flexbox Simplifié
+
+Pour des layouts flexibles et responsives.
+
+```tsx
+<Flex direction="row" gap={16} align="center" justify="between">
+  <Button>Gauche</Button>
+  <Button>Droite</Button>
+</Flex>
+<Flex direction="column" mobileDirection="row">...</Flex>
+```
+
+Props principales :
+- `direction`, `align`, `justify`, `wrap`, `gap`, `mobileDirection`, etc.
+
+---
+
+### 7. Grid - Grille Responsive
+
+```tsx
+<Grid columns={3} gap={24} minWidth="200px">
+  <Card>1</Card>
+  <Card>2</Card>
+  <Card>3</Card>
+</Grid>
+<Grid columns="auto-fit" mobileColumns={1}>...</Grid>
+```
+
+Props principales :
+- `columns`, `gap`, `minWidth`, `mobileColumns`, etc.
+
+---
+
+### 8. Layout - Mise en Page
 
 ```tsx
 <Layout>
-  <div>Contenu principal</div>
+  <main>Contenu principal</main>
 </Layout>
 ```
 
-### 7. Navbar - Navigation
+Props principales :
+- `direction`, `gap`, `className`, etc.
+
+---
+
+### 9. Navbar - Barre de Navigation
 
 ```tsx
 <Navbar 
@@ -194,6 +281,57 @@ Le composant `Body` est le conteneur principal qui gère automatiquement :
     <a href="#contact">Contact</a>
   </nav>
 </Navbar>
+```
+
+Props principales :
+- `logo`, `sticky`, `variant`, `corner`, etc.
+
+---
+
+### 10. ThemeProvider - Provider de Thème
+
+Permet d'injecter un thème custom ou de gérer dynamiquement le thème dans l'app.
+
+```tsx
+import { ThemeProvider } from 'lucent-ui';
+
+<ThemeProvider theme="velora">
+  <App />
+</ThemeProvider>
+```
+
+Props principales :
+- `theme`, `config`, etc.
+
+---
+
+### 11. Hooks - Utilitaires React
+
+#### useAnimation
+Permet de détecter les préférences d'animation de l'utilisateur.
+
+```tsx
+import { useAnimation } from 'lucent-ui';
+const prefersReducedMotion = useAnimation();
+```
+
+---
+
+### 12. Utilitaires & Types
+
+#### cn (classNames)
+Fonction utilitaire pour composer dynamiquement les classes CSS.
+
+```tsx
+import { cn } from 'lucent-ui';
+const classes = cn('btn', isActive && 'btn-active');
+```
+
+#### Types
+Tous les types TypeScript sont exportés pour une intégration avancée.
+
+```tsx
+import type { ThemeConfig, ButtonProps } from 'lucent-ui';
 ```
 
 ---

@@ -6,6 +6,8 @@ import { Loader2 } from 'lucide-react';
 interface ButtonProps extends ComponentProps, React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
   fullWidth?: boolean;
+  leftIcon?: React.ReactNode;
+  rightIcon?: React.ReactNode;
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
@@ -19,17 +21,24 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
   glow = false,
   className,
   children,
+  leftIcon,
+  rightIcon,
   ...props
 }, ref) => {
-  // Gérer le corner radius personnalisé
-  const getCornerRadius = () => {
+  const [styles, setStyles] = React.useState<React.CSSProperties>({});
+
+  React.useEffect(() => {
+    const newStyles: React.CSSProperties = {};
+
+    // Gérer le corner radius personnalisé
     if (corner !== undefined) {
-      // Si c'est un nombre, ajouter 'px', sinon utiliser tel quel
-      const radius = typeof corner === 'number' ? `${corner}px` : corner;
-      return `rounded-[${radius}]`;
+      newStyles.borderRadius = typeof corner === 'number' ? `${corner}px` : corner;
+    } else {
+      newStyles.borderRadius = 'var(--border-radius)';
     }
-    return 'rounded-[var(--border-radius)]';
-  };
+
+    setStyles(newStyles);
+  }, [corner]);
 
   // Gérer les ombres personnalisées
   const getShadow = () => {
@@ -41,10 +50,11 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
   // Gérer l'effet glow
   const getGlow = () => {
     if (!glow) return '';
-    return 'drop-shadow-[0_0_20px_rgba(var(--color-primary-rgb),0.4)] hover:drop-shadow-[0_0_30px_rgba(var(--color-primary-rgb),0.6)]';
+    const glowColorVar = variant === 'secondary' ? 'var(--color-secondary-rgb)' : 'var(--color-primary-rgb)';
+    return `drop-shadow-[0_0_15px_rgba(${glowColorVar},0.3)] hover:drop-shadow-[0_0_25px_rgba(${glowColorVar},0.5)]`;
   };
 
-  const baseStyles = `inline-flex items-center justify-center font-medium transition-all duration-[var(--animation-duration)] focus:outline-none focus:ring-2 focus:ring-offset-2 ${getCornerRadius()} ${getShadow()} ${getGlow()}`;
+  const baseStyles = `inline-flex items-center justify-center font-medium transition-all duration-[var(--animation-duration)] focus:outline-none focus:ring-2 focus:ring-offset-2 ${getShadow()} ${getGlow()}`;
   
   const variants = {
     primary: `
@@ -68,6 +78,17 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
       hover:bg-[var(--color-surface)] dark:hover:bg-[var(--color-surfaceDark)]
       text-[var(--color-text)] dark:text-[var(--color-textDark)]
       hover:border-[var(--color-primary)] focus:ring-[var(--color-primary)]
+    `,
+    gradient: `
+      bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)]
+      text-white shadow-[var(--shadow-lg)] hover:shadow-[var(--shadow-xl)]
+      focus:ring-[var(--color-primary)] hover:scale-105 active:scale-95
+    `,
+    glass: `
+      bg-white/10 backdrop-blur-md border border-white/20
+      text-white
+      shadow-[var(--shadow-lg)] hover:shadow-[var(--shadow-xl)]
+      focus:ring-white/50 hover:bg-white/20
     `
   };
 
@@ -82,6 +103,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
   return (
     <button
       ref={ref}
+      style={styles}
       className={cn(
         baseStyles,
         variants[variant],
@@ -94,7 +116,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
       {...props}
     >
       {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+      {!loading && leftIcon && <span className="mr-2">{leftIcon}</span>}
       {children}
+      {!loading && rightIcon && <span className="ml-2">{rightIcon}</span>}
     </button>
   );
 });

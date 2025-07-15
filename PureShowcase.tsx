@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { 
   Body, Card, Button, Navbar, Container, Grid,
   lucent, pure, getThemeNames, LUCENT_THEMES
-} from '../src/pure';
+} from './src/pure';
 
 export function PureShowcase() {
   const [currentTheme, setCurrentTheme] = useState('crystal');
