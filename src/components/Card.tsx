@@ -12,45 +12,44 @@ export const Card: React.FC<CardProps> = ({
   children, 
   ...props 
 }) => {
-  // Gérer le corner radius personnalisé
+  // Responsive padding
+  const responsivePadding = {
+    none: 'p-0',
+    sm: 'p-3 sm:p-4',
+    md: 'p-4 sm:p-6 md:p-8',
+    lg: 'p-6 sm:p-8 md:p-10 lg:p-12',
+    xl: 'p-8 sm:p-10 md:p-12 lg:p-16',
+  };
+
   const getCornerRadius = () => {
     if (corner !== undefined) {
       const radius = typeof corner === 'number' ? `${corner}px` : corner;
       return `rounded-[${radius}]`;
     }
-    return 'rounded-[var(--border-radius)]';
+    return 'rounded-xl sm:rounded-2xl';
   };
 
-  // Gérer les ombres personnalisées
   const getShadow = () => {
     if (shadow === 'none') return '';
-    if (shadow === 'glow') return 'shadow-[var(--shadow-lg)] hover:shadow-[var(--shadow-xl)]';
-    return `shadow-[var(--shadow-${shadow})] hover:shadow-[var(--shadow-${shadow === 'xl' ? 'xl' : 'lg'})]`;
+    if (shadow === 'glow') return 'shadow-md md:shadow-lg hover:shadow-lg md:hover:shadow-xl';
+    return `shadow-${shadow} md:hover:shadow-${shadow === 'xl' ? 'xl' : 'lg'}`;
   };
 
-  // Gérer l'effet glow
   const getGlow = () => {
     if (!glow) return '';
-    return 'drop-shadow-[0_0_15px_rgba(var(--color-primary-rgb),0.3)] hover:drop-shadow-[0_0_25px_rgba(var(--color-primary-rgb),0.5)]';
+    return `
+      drop-shadow-sm md:drop-shadow-[0_0_15px_rgba(var(--color-primary-rgb),0.25)]
+      md:hover:drop-shadow-[0_0_25px_rgba(var(--color-primary-rgb),0.45)]
+    `;
   };
 
-  // Padding classes
-  const paddingClasses = {
-    none: 'p-0',
-    sm: 'p-4',
-    md: 'p-6',
-    lg: 'p-8',
-    xl: 'p-12',
-  };
-
-  // Variant classes
   const variantClasses = {
     default: `
       bg-[var(--color-background)] dark:bg-[var(--color-backgroundDark)]
       border border-[var(--color-border)] dark:border-[var(--color-borderDark)]
     `,
     glass: `
-      bg-white/10 dark:bg-black/20 backdrop-blur-lg
+      bg-white/10 dark:bg-black/20 backdrop-blur-md md:backdrop-blur-lg
       border border-white/20 dark:border-white/10
     `,
     gradient: `
@@ -73,9 +72,10 @@ export const Card: React.FC<CardProps> = ({
         getCornerRadius(),
         getShadow(),
         getGlow(),
-        paddingClasses[padding],
+        responsivePadding[padding],
         variantClasses[variant],
-        'hover:-translate-y-1 hover:scale-[1.02]',
+        'md:hover:-translate-y-1 md:hover:scale-[1.02]',
+        'w-full max-w-full sm:max-w-[90%] md:max-w-[720px] xl:max-w-[960px]',
         className
       )}
       style={{

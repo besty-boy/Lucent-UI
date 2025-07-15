@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Body, Card, Button, Navbar, Input, Modal, Grid, Section, Container, Text, Flex } from './src';
-import { getThemeNames, LUCENT_THEMES } from './src/themes';
+import { Body, Card, Button, Navbar, Input, Modal, Grid, Section, Container, Text, Flex } from '../src';
+import { getThemeNames, LUCENT_THEMES } from '../src/themes';
 
 export function ThemeShowcase() {
   const [currentTheme, setCurrentTheme] = useState('velora');

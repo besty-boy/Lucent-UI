@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { cn } from '../utils';
+import { Menu, X } from 'lucide-react';
+import { ComponentProps } from '../types';
 
-interface NavbarProps {
+type NavbarVariant = 'default' | 'glass' | 'solid';
+
+interface NavbarProps extends Omit<ComponentProps, 'variant'> {
   logo?: string | React.ReactNode;
   children?: React.ReactNode;
   className?: string;
   sticky?: boolean;
-  transparent?: boolean;
-  variant?: 'default' | 'glass' | 'solid';
+  variant?: NavbarVariant;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -15,34 +18,50 @@ export const Navbar: React.FC<NavbarProps> = ({
   children,
   className = '',
   sticky = true,
-  transparent = false,
   variant = 'default',
+  corner,
+  shadow,
 }) => {
-  const baseClasses = 'w-full px-4 sm:px-6 lg:px-8 py-4 transition-all duration-300';
-  
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+
+    if (typeof window !== 'undefined') {
+      window.addEventListener('scroll', handleScroll);
+      return () => window.removeEventListener('scroll', handleScroll);
+    }
+  }, []);
+
+  const baseClasses = 'w-full px-4 sm:px-6 lg:px-8 py-3 transition-all duration-300 ease-in-out';
+
   const variantClasses = {
-    default: 'bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200/20 dark:border-gray-700/20',
-    glass: 'bg-white/10 dark:bg-gray-900/10 backdrop-blur-xl border-b border-white/20 dark:border-gray-700/20',
-    solid: 'bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700',
+    default: `border-b border-transparent ${isScrolled ? 'bg-[var(--color-surface)]/80 dark:bg-[var(--color-surfaceDark)]/80 backdrop-blur-md border-[var(--color-border)]/20' : ''}`,
+    glass: 'border-b border-white/10 backdrop-blur-xl',
+    solid: 'bg-[var(--color-surface)] dark:bg-[var(--color-surfaceDark)] border-b border-[var(--color-border)] dark:border-[var(--color-borderDark)]',
   };
 
   const stickyClasses = sticky ? 'sticky top-0 z-50' : '';
-  const transparentClasses = transparent ? 'bg-transparent border-none' : '';
 
   const navbarClasses = cn(
     baseClasses,
     stickyClasses,
-    transparent ? transparentClasses : variantClasses[variant],
+    variantClasses[variant],
+    shadow && `shadow-[var(--shadow-${shadow})]`,
+    corner ? `rounded-[var(--border-radius-${corner})]` : '',
     className
   );
 
   return (
-    <nav className={navbarClasses}>
+    <header className={navbarClasses}>
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Logo */}
         <div className="flex items-center">
           {typeof logo === 'string' ? (
-            <span className="text-xl font-bold text-gray-900 dark:text-white">
+            <span className="text-xl font-bold text-[var(--color-text)] dark:text-[var(--color-textDark)]">
               {logo}
             </span>
           ) : (
@@ -50,11 +69,32 @@ export const Navbar: React.FC<NavbarProps> = ({
           )}
         </div>
 
-        {/* Navigation content */}
-        <div className="flex items-center space-x-6">
+        {/* Desktop Nav */}
+        <div className="hidden md:flex items-center space-x-8">
+          {children}
+        </div>
+
+        {/* Mobile Menu Button */}
+        <div className="md:hidden">
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="text-[var(--color-textSecondary)] dark:text-[var(--color-textSecondaryDark)] focus:outline-none"
+            aria-label="Toggle menu"
+          >
+            {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile Menu */}
+      <div className={cn(
+        'md:hidden overflow-hidden transition-all duration-500 ease-in-out',
+        menuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+      )}>
+        <div className="mt-4 space-y-4 px-4 pb-4">
           {children}
         </div>
       </div>
-    </nav>
+    </header>
   );
 };
