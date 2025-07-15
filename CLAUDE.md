@@ -1,16 +1,15 @@
-
 # CLAUDE.md
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Project Overview
 
-**Lucent-UI** (code name, final name TBD) is an ultra-simplified React UI engine that generates complete, responsive, performant and elegant websites with minimal code. The goal is to enable users to install the package, write 2-3 components, and have everything ready automatically.
+**Lucent-UI** is an ultra-simplified React UI library that generates complete, responsive, performant websites with minimal code. The core vision is one-click setup where users can write 2-3 components and have everything ready automatically.
 
-### Core Vision
-- **One-click setup**: Complete React initialization with Tailwind, themes, dark mode, SEO
+### Key Features
+- **One-click setup**: Complete React initialization with themes, dark mode, SEO
 - **Minimal code**: `<Body theme="velora"><Card><Button>Hello</Button></Card></Body>` creates a full site
-- **Auto-everything**: 100% responsive, premium themes, optimized images, accessibility, animations
+- **Auto-everything**: 100% responsive, premium themes, optimized performance, accessibility
 - **Zero config**: No manual setup needed for common web development requirements
 
 ## Development Commands
@@ -19,7 +18,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 # Start development server
 npm run dev
 
-# Build the library for production 
+# Build the library for production
 npm run build
 
 # Run tests
@@ -32,57 +31,115 @@ npm run lint
 npm run preview
 ```
 
-## Target Architecture (To Be Built)
+## Architecture Overview
 
-### Key Components to Implement
-- **Body**: Root intelligent component (theme init, layout, SEO, responsive auto-setup)
-- **ThemeEngine**: Dynamic injection of premium styles and colors
-- **Pre-styled UI Components**: Card, Button, Input, Layout, Navbar with smart props
-- **Core Hooks**: useTheme, useDevice, useOptimizedImage, useAnimation
-- **Dynamic Tailwind Config**: Theme variants that auto-configure
-
-### Current Structure
-- **Components**: Located in `src/components/` - Basic UI components (Button, Card, Input, Layout)
-- **Hooks**: Located in `src/hooks/` - Performance hooks (useAnimation, useOptimizedImage) 
-- **Providers**: Located in `src/providers/` - ThemeProvider (needs enhancement for theme engine)
-- **Types**: Located in `src/types/` - TypeScript interfaces
-- **Utils**: Located in `src/utils/` - Utility functions (cn, debounce, generateId)
-
-### Premium Theme System (Target)
-Automatic theme injection with variants:
-- **velora**: Primary target theme
-- **goodlook**: Secondary theme option  
-- **lucent**: Additional theme variant
-- Auto dark/light mode detection and switching
-- Complete responsive breakpoint management
-
-### Ultra-Simplified API (Target)
-```jsx
-<Body theme="velora" autoDark responsive>
-  <Navbar logo="MyBrand" />
-  <Card glass>
-    <Button variant="primary" loading>Get Started</Button>
-  </Card>
-</Body>
+### Core Structure
+```
+src/
+├── components/           # Core UI components
+│   ├── Body.tsx         # Root intelligent component with auto-setup
+│   ├── Button.tsx       # Pre-styled button component
+│   ├── Card.tsx         # Container component
+│   ├── Input.tsx        # Form input component
+│   ├── Layout.tsx       # Layout utilities
+│   ├── Navbar.tsx       # Navigation component
+│   ├── premium/         # Premium animated components
+│   └── pure/            # Pure CSS variant components
+├── hooks/               # Performance and utility hooks
+│   ├── useAnimation.ts  # Intersection observer animations
+│   ├── useDevice.ts     # Device detection
+│   └── useOptimizedImage.ts
+├── providers/           # React context providers
+│   └── ThemeProvider.tsx # Theme management
+├── themes/              # Theme system
+├── types/               # TypeScript interfaces
+└── utils/               # Utility functions
 ```
 
-## Short-term Deliverables
+### Key Components
 
-1. **Package structure setup**
-2. **Body component** with auto dark mode, responsive, meta tags
-3. **Core components**: Card, Button, Navbar with premium styling
-4. **Extensible theme system** (velora, goodlook, lucent themes)
-5. **README.md** + Vite demo setup
+#### Body Component (`src/components/Body.tsx`)
+The root intelligent component that handles:
+- **Auto-setup**: Theme injection, SEO meta tags, responsive viewport
+- **Performance optimization**: Based on device memory, connection type, user preferences
+- **Accessibility**: Respects `prefers-reduced-motion` and `prefers-contrast`
+- **Theme management**: Applies CSS custom properties and theme-specific styles
+- **Development tools**: Performance monitor in dev mode
+
+#### Theme System (`src/providers/ThemeProvider.tsx`)
+- **Auto dark mode**: Detects system preferences and applies appropriate theme
+- **Premium themes**: velora, aurora, neon, crystal, obsidian, glacial, military, apple, ocean, sunset, forest, midnight
+- **CSS custom properties**: Dynamic theming through CSS variables
+- **Performance-aware**: Adjusts animations based on device capabilities
+
+#### Performance Hooks (`src/hooks/`)
+- `useAnimation`: Intersection observer for scroll-triggered animations
+- `useDevice`: Device detection and capabilities
+- `useOptimizedImage`: Image optimization utilities
+
+### Build Configuration
+
+Built with Vite in library mode:
+- **Entry point**: `src/index.ts`
+- **External dependencies**: React, React-DOM (peer dependencies)
+- **Output**: ES modules and UMD bundles
+- **TypeScript**: Strict mode with full type checking
+
+### Development Architecture
+
+#### Component Structure
+Components follow a consistent pattern:
+- TypeScript interfaces in `src/types/index.ts`
+- Tailwind CSS for styling with CSS custom properties
+- Premium variants with advanced animations
+- Performance-optimized rendering
+
+#### Theme Implementation
+Themes are applied through:
+1. CSS custom properties set on document root
+2. Tailwind classes referencing theme variables
+3. Performance-based animation adjustments
+4. Auto-detection of user preferences
+
+#### Performance Strategy
+- **Adaptive performance**: Adjusts based on device memory and connection
+- **Reduced motion**: Respects accessibility preferences
+- **GPU acceleration**: Conditionally applied based on performance mode
+- **Bundle optimization**: Tree-shakeable exports
+
+## Key Dependencies
+
+- **React 18**: Core framework with TypeScript
+- **Tailwind CSS**: Utility-first styling
+- **Lucide React**: Consistent iconography
+- **Vite**: Build tooling and development server
+- **Vitest**: Testing framework
+- **PostCSS + Autoprefixer**: CSS processing
 
 ## Development Notes
 
-- Uses React 18 with TypeScript strict mode
-- Tailwind CSS for styling with PostCSS and Autoprefixer
-- Lucide React for consistent iconography
-- ESLint with TypeScript and React hooks rules
-- Vitest for testing framework
-- Build target: Vite library mode with create-velora-app CLI for rapid setup
+### Theme Development
+- Themes are defined in `src/themes/` with CSS custom properties
+- Auto dark mode detection is handled by ThemeProvider
+- Performance-based animation adjustments in Body component
 
-## Project Ambition
+### Component Development
+- Follow existing patterns in component structure
+- Use TypeScript interfaces from `src/types/index.ts`
+- Implement responsive design with Tailwind breakpoints
+- Consider performance implications (device memory, connection speed)
 
-**One npm install, 2-3 components = complete React site** with premium design, zero configuration required.
+### Testing Strategy
+- Use Vitest for unit tests
+- Component testing with React Testing Library patterns
+- Performance testing for theme switching and animations
+
+### Performance Considerations
+- Body component automatically detects device capabilities
+- Animations disabled for reduced motion preferences
+- GPU acceleration conditionally applied
+- Bundle size optimized through tree-shaking
+
+## Project Goals
+
+The ultimate goal is **one npm install, 2-3 components = complete React site** with premium design and zero configuration required. The library should feel magical in its simplicity while providing professional-grade output.

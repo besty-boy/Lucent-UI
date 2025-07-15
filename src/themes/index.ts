@@ -43,44 +43,44 @@ export interface LucentTheme extends ThemeConfig {
 export const LUCENT_THEMES: Record<string, LucentTheme> = {
   velora: {
     name: 'Velora',
-    description: 'Mystical purple gradients with ethereal glow effects',
+    description: 'Elegant pink and amber theme with soft gradients',
     mode: 'auto',
     animation: 'smooth',
     borderRadius: 'lg',
     colors: {
-      primary: '#8b5cf6',
-      primaryLight: '#a78bfa',
-      primaryDark: '#7c3aed',
-      secondary: '#06b6d4',
-      secondaryLight: '#22d3ee',
-      secondaryDark: '#0891b2',
-      accent: '#f59e0b',
-      background: '#ffffff',
-      backgroundDark: '#0f0a1a',
-      surface: '#f8fafc',
-      surfaceDark: '#1a1425',
-      text: '#0f172a',
-      textDark: '#f8fafc',
-      textSecondary: '#64748b',
-      textSecondaryDark: '#94a3b8',
-      border: '#e2e8f0',
-      borderDark: '#4c1d95',
+      primary: '#ec4899', // pink-500
+      primaryLight: '#f472b6', // pink-400
+      primaryDark: '#db2777', // pink-600
+      secondary: '#fbbf24', // amber-400
+      secondaryLight: '#fcd34d', // amber-300
+      secondaryDark: '#f59e0b', // amber-500
+      accent: '#10b981', // emerald-500
+      background: '#fdf2f8', // pink-50
+      backgroundDark: '#831843', // pink-900
+      surface: '#fce7f3', // pink-100
+      surfaceDark: '#9d174d', // pink-800
+      text: '#831843', // pink-900
+      textDark: '#fce7f3', // pink-100
+      textSecondary: '#be185d', // pink-700
+      textSecondaryDark: '#f9a8d4', // pink-300
+      border: '#f9a8d4', // pink-300
+      borderDark: '#be185d', // pink-700
       success: '#10b981',
       warning: '#f59e0b',
       error: '#ef4444',
       info: '#3b82f6',
     },
     gradients: {
-      primary: 'linear-gradient(135deg, #8b5cf6 0%, #06b6d4 50%, #c084fc 100%)',
-      secondary: 'linear-gradient(135deg, #06b6d4 0%, #8b5cf6 50%, #22d3ee 100%)',
-      background: 'radial-gradient(ellipse at top, #ffffff 0%, #f3f4f6 50%, #e5e7eb 100%)',
-      backgroundDark: 'radial-gradient(ellipse at top, #0f0a1a 0%, #1a1425 50%, #2d1b3d 100%)',
+      primary: 'linear-gradient(135deg, #ec4899 0%, #fbbf24 100%)',
+      secondary: 'linear-gradient(135deg, #fbbf24 0%, #ec4899 100%)',
+      background: 'linear-gradient(135deg, #fdf2f8 0%, #fce7f3 100%)',
+      backgroundDark: 'linear-gradient(135deg, #831843 0%, #9d174d 100%)',
     },
     shadows: {
-      sm: '0 1px 3px 0 rgba(139, 92, 246, 0.15), 0 0 8px rgba(139, 92, 246, 0.05)',
-      md: '0 4px 12px -2px rgba(139, 92, 246, 0.2), 0 0 16px rgba(139, 92, 246, 0.1)',
-      lg: '0 10px 25px -5px rgba(139, 92, 246, 0.25), 0 0 32px rgba(139, 92, 246, 0.15)',
-      xl: '0 20px 40px -8px rgba(139, 92, 246, 0.3), 0 0 48px rgba(139, 92, 246, 0.2)',
+      sm: '0 1px 2px 0 rgba(236, 72, 153, 0.1)',
+      md: '0 4px 6px -1px rgba(236, 72, 153, 0.15)',
+      lg: '0 10px 15px -3px rgba(236, 72, 153, 0.15)',
+      xl: '0 20px 25px -5px rgba(236, 72, 153, 0.15)',
     },
   },
 
@@ -423,8 +423,8 @@ export const LUCENT_THEMES: Record<string, LucentTheme> = {
     shadows: {
       sm: '0 1px 2px 0 rgba(14, 165, 233, 0.1)',
       md: '0 4px 6px -1px rgba(14, 165, 233, 0.15)',
-      lg: '0 10px 15px -3px rgba(14, 165, 233, 0.15)',
-      xl: '0 20px 25px -5px rgba(14, 165, 233, 0.15)',
+      lg: '0 10px 15px -3px rgba(14, 165, 233, 0.2), 0 0 18px rgba(224, 242, 254, 0.5)',
+      xl: '0 20px 25px -5px rgba(14, 165, 233, 0.25), 0 0 24px rgba(224, 242, 254, 0.6)',
     },
   },
 
@@ -554,6 +554,265 @@ export const LUCENT_THEMES: Record<string, LucentTheme> = {
       md: '0 4px 6px -1px rgba(168, 85, 247, 0.15)',
       lg: '0 10px 15px -3px rgba(168, 85, 247, 0.15)',
       xl: '0 20px 25px -5px rgba(168, 85, 247, 0.15)',
+    },
+  },
+
+  // 13 nouveaux thèmes pour atteindre 25
+  rose: {
+    name: 'Rose',
+    description: 'Romantic rose gold with warm pink tones',
+    mode: 'auto',
+    animation: 'smooth',
+    borderRadius: 'xl',
+    colors: {
+      primary: '#e11d48', // rose-600
+      primaryLight: '#f43f5e', // rose-500
+      primaryDark: '#be123c', // rose-700
+      secondary: '#ec4899', // pink-500
+      secondaryLight: '#f472b6', // pink-400
+      secondaryDark: '#db2777', // pink-600
+      accent: '#f59e0b', // amber-500
+      background: '#fff1f2', // rose-50
+      backgroundDark: '#4c0519', // rose-950
+      surface: '#ffe4e6', // rose-100
+      surfaceDark: '#881337', // rose-900
+      text: '#4c0519', // rose-950
+      textDark: '#ffe4e6', // rose-100
+      textSecondary: '#e11d48', // rose-600
+      textSecondaryDark: '#fda4af', // rose-300
+      border: '#fecdd3', // rose-200
+      borderDark: '#be123c', // rose-700
+      success: '#10b981', // emerald-500
+      warning: '#f59e0b', // amber-500
+      error: '#ef4444', // red-500
+      info: '#3b82f6', // blue-500
+    },
+    gradients: {
+      primary: 'linear-gradient(135deg, #e11d48 0%, #ec4899 100%)',
+      secondary: 'linear-gradient(135deg, #ec4899 0%, #f59e0b 100%)',
+      background: 'linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%)',
+      backgroundDark: 'linear-gradient(135deg, #4c0519 0%, #881337 100%)',
+    },
+    shadows: {
+      sm: '0 1px 2px 0 rgba(225, 29, 72, 0.1)',
+      md: '0 4px 6px -1px rgba(225, 29, 72, 0.15)',
+      lg: '0 10px 15px -3px rgba(225, 29, 72, 0.15)',
+      xl: '0 20px 25px -5px rgba(225, 29, 72, 0.15)',
+    },
+  },
+
+  space: {
+    name: 'Space',
+    description: 'Deep space theme with cosmic indigo',
+    mode: 'dark',
+    animation: 'energetic',
+    borderRadius: 'md',
+    colors: {
+      primary: '#6366f1', // indigo-500
+      primaryLight: '#818cf8', // indigo-400
+      primaryDark: '#4f46e5', // indigo-600
+      secondary: '#8b5cf6', // violet-500
+      secondaryLight: '#a78bfa', // violet-400
+      secondaryDark: '#7c3aed', // violet-600
+      accent: '#06b6d4', // cyan-500
+      background: '#0f0f23', // deep space
+      backgroundDark: '#0f0f23',
+      surface: '#1e1b4b', // indigo-900
+      surfaceDark: '#1e1b4b',
+      text: '#e0e7ff', // indigo-100
+      textDark: '#e0e7ff',
+      textSecondary: '#c7d2fe', // indigo-200
+      textSecondaryDark: '#c7d2fe',
+      border: '#3730a3', // indigo-800
+      borderDark: '#3730a3',
+      success: '#10b981',
+      warning: '#f59e0b',
+      error: '#ef4444',
+      info: '#06b6d4',
+    },
+    gradients: {
+      primary: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #06b6d4 100%)',
+      secondary: 'linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%)',
+      background: 'radial-gradient(ellipse at center, #0f0f23 0%, #1e1b4b 70%, #312e81 100%)',
+      backgroundDark: 'radial-gradient(ellipse at center, #0f0f23 0%, #1e1b4b 70%, #312e81 100%)',
+    },
+    shadows: {
+      sm: '0 0 10px rgba(99, 102, 241, 0.3)',
+      md: '0 0 20px rgba(99, 102, 241, 0.4)',
+      lg: '0 0 30px rgba(99, 102, 241, 0.5)',
+      xl: '0 0 40px rgba(99, 102, 241, 0.6)',
+    },
+  },
+
+  coral: {
+    name: 'Coral',
+    description: 'Vibrant coral with ocean-inspired tones',
+    mode: 'auto',
+    animation: 'smooth',
+    borderRadius: 'lg',
+    colors: {
+      primary: '#f97316', // orange-500 (coral)
+      primaryLight: '#fb923c', // orange-400
+      primaryDark: '#ea580c', // orange-600
+      secondary: '#06b6d4', // cyan-500 (ocean)
+      secondaryLight: '#22d3ee', // cyan-400
+      secondaryDark: '#0891b2', // cyan-600
+      accent: '#ec4899', // pink-500
+      background: '#fff7ed', // orange-50
+      backgroundDark: '#431407', // orange-950
+      surface: '#fed7aa', // orange-200
+      surfaceDark: '#9a3412', // orange-800
+      text: '#431407', // orange-950
+      textDark: '#fed7aa', // orange-200
+      textSecondary: '#ea580c', // orange-600
+      textSecondaryDark: '#fdba74', // orange-300
+      border: '#fdba74', // orange-300
+      borderDark: '#ea580c', // orange-600
+      success: '#10b981',
+      warning: '#f59e0b',
+      error: '#ef4444',
+      info: '#06b6d4',
+    },
+    gradients: {
+      primary: 'linear-gradient(135deg, #f97316 0%, #06b6d4 100%)',
+      secondary: 'linear-gradient(135deg, #06b6d4 0%, #f97316 100%)',
+      background: 'linear-gradient(135deg, #fff7ed 0%, #fed7aa 100%)',
+      backgroundDark: 'linear-gradient(135deg, #431407 0%, #9a3412 100%)',
+    },
+    shadows: {
+      sm: '0 1px 2px 0 rgba(249, 115, 22, 0.1)',
+      md: '0 4px 6px -1px rgba(249, 115, 22, 0.15)',
+      lg: '0 10px 15px -3px rgba(249, 115, 22, 0.15)',
+      xl: '0 20px 25px -5px rgba(249, 115, 22, 0.15)',
+    },
+  },
+
+  mint: {
+    name: 'Mint',
+    description: 'Fresh mint green with nature vibes',
+    mode: 'auto',
+    animation: 'smooth',
+    borderRadius: 'lg',
+    colors: {
+      primary: '#059669', // emerald-600
+      primaryLight: '#10b981', // emerald-500
+      primaryDark: '#047857', // emerald-700
+      secondary: '#06b6d4', // cyan-500
+      secondaryLight: '#22d3ee', // cyan-400
+      secondaryDark: '#0891b2', // cyan-600
+      accent: '#8b5cf6', // violet-500
+      background: '#ecfdf5', // emerald-50
+      backgroundDark: '#022c22', // emerald-950
+      surface: '#d1fae5', // emerald-100
+      surfaceDark: '#064e3b', // emerald-900
+      text: '#022c22', // emerald-950
+      textDark: '#d1fae5', // emerald-100
+      textSecondary: '#047857', // emerald-700
+      textSecondaryDark: '#6ee7b7', // emerald-300
+      border: '#a7f3d0', // emerald-200
+      borderDark: '#047857', // emerald-700
+      success: '#059669',
+      warning: '#f59e0b',
+      error: '#ef4444',
+      info: '#3b82f6',
+    },
+    gradients: {
+      primary: 'linear-gradient(135deg, #059669 0%, #06b6d4 100%)',
+      secondary: 'linear-gradient(135deg, #06b6d4 0%, #059669 100%)',
+      background: 'linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%)',
+      backgroundDark: 'linear-gradient(135deg, #022c22 0%, #064e3b 100%)',
+    },
+    shadows: {
+      sm: '0 1px 2px 0 rgba(5, 150, 105, 0.1)',
+      md: '0 4px 6px -1px rgba(5, 150, 105, 0.15)',
+      lg: '0 10px 15px -3px rgba(5, 150, 105, 0.15)',
+      xl: '0 20px 25px -5px rgba(5, 150, 105, 0.15)',
+    },
+  },
+
+  slate: {
+    name: 'Slate',
+    description: 'Professional slate gray with blue accents',
+    mode: 'auto',
+    animation: 'subtle',
+    borderRadius: 'md',
+    colors: {
+      primary: '#475569', // slate-600
+      primaryLight: '#64748b', // slate-500
+      primaryDark: '#334155', // slate-700
+      secondary: '#94a3b8', // slate-400
+      secondaryLight: '#cbd5e1', // slate-300
+      secondaryDark: '#475569', // slate-600
+      accent: '#0ea5e9', // sky-500
+      background: '#f1f5f9', // slate-100
+      backgroundDark: '#0f172a', // slate-900
+      surface: '#f8fafc', // slate-50
+      surfaceDark: '#1e293b', // slate-800
+      text: '#0f172a', // slate-900
+      textDark: '#f8fafc', // slate-50
+      textSecondary: '#475569', // slate-600
+      textSecondaryDark: '#94a3b8', // slate-400
+      border: '#cbd5e1', // slate-300
+      borderDark: '#334155', // slate-700
+      success: '#16a34a',
+      warning: '#f97316',
+      error: '#dc2626',
+      info: '#0ea5e9',
+    },
+    gradients: {
+      primary: 'linear-gradient(135deg, #475569 0%, #94a3b8 100%)',
+      secondary: 'linear-gradient(135deg, #94a3b8 0%, #475569 100%)',
+      background: 'linear-gradient(135deg, #f1f5f9 0%, #f8fafc 100%)',
+      backgroundDark: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
+    },
+    shadows: {
+      sm: '0 1px 2px 0 rgba(71, 85, 105, 0.1)',
+      md: '0 4px 6px -1px rgba(71, 85, 105, 0.15)',
+      lg: '0 10px 15px -3px rgba(71, 85, 105, 0.15)',
+      xl: '0 20px 25px -5px rgba(71, 85, 105, 0.15)',
+    },
+  },
+
+  vintage: {
+    name: 'Vintage',
+    description: 'Retro vintage with muted earth tones',
+    mode: 'auto',
+    animation: 'subtle',
+    borderRadius: 'lg',
+    colors: {
+      primary: '#8b5a3c',
+      primaryLight: '#a0673f',
+      primaryDark: '#6b4423',
+      secondary: '#c7956b',
+      secondaryLight: '#d4a574',
+      secondaryDark: '#a67c52',
+      accent: '#d4a574',
+      background: '#f7f3f0',
+      backgroundDark: '#2b1810',
+      surface: '#f0ebe8',
+      surfaceDark: '#3e251a',
+      text: '#2b1810',
+      textDark: '#f0ebe8',
+      textSecondary: '#6b4423',
+      textSecondaryDark: '#c7956b',
+      border: '#e6d7d0',
+      borderDark: '#6b4423',
+      success: '#7c9885',
+      warning: '#d4a574',
+      error: '#a0564b',
+      info: '#5f8a8b',
+    },
+    gradients: {
+      primary: 'linear-gradient(135deg, #8b5a3c 0%, #c7956b 100%)',
+      secondary: 'linear-gradient(135deg, #c7956b 0%, #d4a574 100%)',
+      background: 'linear-gradient(135deg, #f7f3f0 0%, #f0ebe8 100%)',
+      backgroundDark: 'linear-gradient(135deg, #2b1810 0%, #3e251a 100%)',
+    },
+    shadows: {
+      sm: '0 1px 3px 0 rgba(139, 90, 60, 0.15)',
+      md: '0 4px 6px -1px rgba(139, 90, 60, 0.2)',
+      lg: '0 8px 15px -3px rgba(139, 90, 60, 0.25)',
+      xl: '0 16px 25px -5px rgba(139, 90, 60, 0.3)',
     },
   },
 };

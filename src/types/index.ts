@@ -12,11 +12,14 @@ export interface ComponentProps {
   loading?: boolean;
   disabled?: boolean;
   className?: string;
+  corner?: number | string;
+  shadow?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'glow';
+  glow?: boolean;
 }
 
 export interface BodyProps {
   children: React.ReactNode;
-  theme?: 'velora' | 'aurora' | 'neon' | 'crystal' | 'obsidian' | 'glacial' | 'military' | 'apple' | 'ocean' | 'sunset' | 'forest' | 'midnight' | 'custom';
+  theme?: 'velora' | 'aurora' | 'neon' | 'crystal' | 'obsidian' | 'glacial' | 'military' | 'apple' | 'ocean' | 'sunset' | 'forest' | 'midnight' | 'rose' | 'space' | 'coral' | 'lavender' | 'gold' | 'mint' | 'cherry' | 'electric' | 'sand' | 'ruby' | 'slate' | 'emerald' | 'vintage' | 'custom';
   autoDark?: boolean;
   responsive?: boolean;
   className?: string;
@@ -29,6 +32,28 @@ export interface BodyProps {
     robots?: string;
     siteName?: string;
   };
+}
+
+export interface CardProps {
+  children: React.ReactNode;
+  className?: string;
+  variant?: 'default' | 'glass' | 'gradient' | 'outline' | 'elevated';
+  padding?: 'none' | 'sm' | 'md' | 'lg' | 'xl';
+  corner?: number | string;
+  shadow?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'glow';
+  glow?: boolean;
+  style?: React.CSSProperties;
+}
+
+export interface ModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  children: React.ReactNode;
+  title?: string;
+  size?: 'sm' | 'md' | 'lg' | 'xl' | 'full';
+  className?: string;
+  blur?: boolean;
+  corner?: number | string;
 }
 
 export interface NavbarProps {

@@ -14,11 +14,37 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
   loading = false,
   disabled = false,
   fullWidth = false,
+  corner,
+  shadow = 'md',
+  glow = false,
   className,
   children,
   ...props
 }, ref) => {
-  const baseStyles = 'inline-flex items-center justify-center font-medium transition-all duration-[var(--animation-duration)] focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-[var(--border-radius)]';
+  // Gérer le corner radius personnalisé
+  const getCornerRadius = () => {
+    if (corner !== undefined) {
+      // Si c'est un nombre, ajouter 'px', sinon utiliser tel quel
+      const radius = typeof corner === 'number' ? `${corner}px` : corner;
+      return `rounded-[${radius}]`;
+    }
+    return 'rounded-[var(--border-radius)]';
+  };
+
+  // Gérer les ombres personnalisées
+  const getShadow = () => {
+    if (shadow === 'none') return '';
+    if (shadow === 'glow') return 'shadow-[var(--shadow-lg)] hover:shadow-[var(--shadow-xl)]';
+    return `shadow-[var(--shadow-${shadow})] hover:shadow-[var(--shadow-${shadow === 'xl' ? 'xl' : 'lg'})]`;
+  };
+
+  // Gérer l'effet glow
+  const getGlow = () => {
+    if (!glow) return '';
+    return 'drop-shadow-[0_0_20px_rgba(var(--color-primary-rgb),0.4)] hover:drop-shadow-[0_0_30px_rgba(var(--color-primary-rgb),0.6)]';
+  };
+
+  const baseStyles = `inline-flex items-center justify-center font-medium transition-all duration-[var(--animation-duration)] focus:outline-none focus:ring-2 focus:ring-offset-2 ${getCornerRadius()} ${getShadow()} ${getGlow()}`;
   
   const variants = {
     primary: `
