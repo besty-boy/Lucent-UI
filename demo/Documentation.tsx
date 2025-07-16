@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Body, Card, Button, Navbar, Grid, Section, Text, Flex, AnimatedCard, MagicButton, FluidLayout, SmartContainer, MagneticZone } from '../src';
 import { getThemeNames, LUCENT_THEMES } from '../src/themes';
 
@@ -11,7 +11,19 @@ export function Documentation(props: DocumentationProps = {}) {
   const [currentTheme, setCurrentTheme] = useState('velora');
   const [activeSection, setActiveSection] = useState('installation');
   const [codeExample, setCodeExample] = useState('basic');
+  const [isMobile, setIsMobile] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const themeNames = getThemeNames();
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const navigationItems = [
     { id: 'installation', label: '🚀 Installation', icon: '📦' },
@@ -151,10 +163,18 @@ function AdvancedExample() {
         backgroundColor: 'var(--color-backgroundDark)', 
         color: 'var(--color-textDark)',
         fontSize: '0.9rem',
-        overflow: 'auto'
+        overflow: 'auto',
+        overflowX: 'auto',
+        maxWidth: '100%'
       }}
     >
-      <pre style={{ margin: 0, fontSize: '0.85rem', lineHeight: '1.5' }}>
+      <pre style={{ 
+        margin: 0, 
+        fontSize: isMobile ? '0.75rem' : '0.85rem', 
+        lineHeight: '1.5',
+        whiteSpace: 'pre-wrap',
+        wordBreak: 'break-word'
+      }}>
         {code}
       </pre>
     </Card>
@@ -185,7 +205,7 @@ function AdvancedExample() {
               {renderCodeExample(codeExamples.basic)}
             </AnimatedCard>
 
-            <Grid columns={3} gap="lg" minWidth="300px">
+            <Grid columns={isMobile ? 1 : 3} gap="lg" minWidth="250px" mobileColumns={1}>
               <AnimatedCard variant="gradient" animation="scale" hoverEffect="lift">
                 <Text as="h4" size="lg" weight="bold" style={{ marginBottom: '1rem' }}>
                   ✅ Auto-Setup
@@ -214,7 +234,7 @@ function AdvancedExample() {
               🎨 Composants Principaux
             </Text>
             
-            <Grid columns={3} gap="lg" minWidth="300px">
+            <Grid columns={isMobile ? 1 : 3} gap="lg" minWidth="250px" mobileColumns={1}>
               {components.map((component, index) => (
                 <AnimatedCard 
                   key={component.name} 
@@ -233,7 +253,12 @@ function AdvancedExample() {
                     Props: {component.props}
                   </Text>
                   <Card variant="outline" padding="sm" style={{ backgroundColor: 'var(--color-backgroundDark)', color: 'var(--color-textDark)' }}>
-                    <pre style={{ margin: 0, fontSize: '0.8rem' }}>
+                    <pre style={{ 
+                      margin: 0, 
+                      fontSize: '0.75rem',
+                      whiteSpace: 'pre-wrap',
+                      wordBreak: 'break-word'
+                    }}>
                       {component.example}
                     </pre>
                   </Card>
@@ -253,23 +278,31 @@ function AdvancedExample() {
               Composants avancés avec animations, effets visuels et intelligence artificielle
             </Text>
 
-            <Flex gap="1rem" wrap="wrap" style={{ marginBottom: '2rem' }}>
-              <MagicButton 
-                variant="magic" 
-                effect="shimmer" 
-                onClick={() => setCodeExample('premium')}
-                className={codeExample === 'premium' ? 'opacity-100' : 'opacity-70'}
-              >
-                Voir Exemple Premium
-              </MagicButton>
-              <MagicButton 
-                variant="neon" 
-                effect="glow"
-                onClick={() => setCodeExample('advanced')}
-                className={codeExample === 'advanced' ? 'opacity-100' : 'opacity-70'}
-              >
-                Exemple Avancé
-              </MagicButton>
+            <Flex gap="1rem" wrap="wrap" direction={isMobile ? 'column' : 'row'} style={{ marginBottom: '2rem' }}>
+              <div style={{ 
+                opacity: codeExample === 'premium' ? 1 : 0.7,
+                width: isMobile ? '100%' : 'auto'
+              }}>
+                <MagicButton 
+                  variant="magic" 
+                  effect="shimmer" 
+                  onClick={() => setCodeExample('premium')}
+                >
+                  Voir Exemple Premium
+                </MagicButton>
+              </div>
+              <div style={{ 
+                opacity: codeExample === 'advanced' ? 1 : 0.7,
+                width: isMobile ? '100%' : 'auto'
+              }}>
+                <MagicButton 
+                  variant="neon" 
+                  effect="glow"
+                  onClick={() => setCodeExample('advanced')}
+                >
+                  Exemple Avancé
+                </MagicButton>
+              </div>
             </Flex>
 
             <AnimatedCard variant="premium" animation="morphism" className="mb-8">
@@ -612,6 +645,15 @@ function App() {
       {/* Header */}
       <Navbar logo="📚 Lucent-UI Docs" variant="glass" sticky>
         <Flex gap="1rem" align="center">
+          {isMobile && (
+            <Button 
+              variant="ghost" 
+              size="sm"
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+            >
+              {sidebarOpen ? '✕' : '☰'}
+            </Button>
+          )}
           <Button variant="ghost" size="sm">GitHub</Button>
           <Button 
             variant="ghost" 
@@ -624,17 +666,19 @@ function App() {
         </Flex>
       </Navbar>
 
-      <div style={{ display: 'flex', minHeight: '100vh' }}>
+      <div style={{ display: 'flex', minHeight: '100vh', flexDirection: isMobile ? 'column' : 'row' }}>
         {/* Sidebar Navigation */}
         <aside style={{ 
-          width: '280px', 
+          width: isMobile ? '100%' : '280px', 
           backgroundColor: 'var(--color-surface)', 
-          borderRight: '1px solid var(--color-border)',
-          padding: '2rem 1rem',
-          position: 'sticky',
-          top: '80px',
-          height: 'calc(100vh - 80px)',
-          overflowY: 'auto'
+          borderRight: isMobile ? 'none' : '1px solid var(--color-border)',
+          borderBottom: isMobile ? '1px solid var(--color-border)' : 'none',
+          padding: isMobile ? '1rem' : '2rem 1rem',
+          position: isMobile ? 'relative' : 'sticky',
+          top: isMobile ? '0' : '80px',
+          height: isMobile ? 'auto' : 'calc(100vh - 80px)',
+          overflowY: 'auto',
+          display: isMobile ? (sidebarOpen ? 'block' : 'none') : 'block'
         }}>
           <Text as="h3" size="lg" weight="bold" style={{ marginBottom: '1rem' }}>
             Navigation
@@ -671,7 +715,12 @@ function App() {
         </aside>
 
         {/* Main Content */}
-        <main style={{ flex: 1, padding: '2rem' }}>
+        <main style={{ 
+          flex: 1, 
+          padding: isMobile ? '1rem' : '2rem',
+          maxWidth: isMobile ? '100%' : 'calc(100% - 280px)',
+          overflow: 'auto'
+        }}>
           <SmartContainer mode="adaptive" maxWidth="2xl">
             {renderSection()}
           </SmartContainer>

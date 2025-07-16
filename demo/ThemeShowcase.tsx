@@ -193,7 +193,7 @@ function App() {
                 }}
               >
                 <Text as="h4" size="lg" style={{ marginBottom: '1rem' }}>Hello World</Text>
-                <Button corner={16} shadow="glow" glow variant="primary">
+                <Button corner={16} shadow="none" glow variant="primary">
                   Get Started
                 </Button>
               </Card>
