@@ -69,14 +69,14 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
       hover:bg-[var(--color-secondaryDark)] focus:ring-[var(--color-secondary)]
     `,
     outline: `
-      border-2 border-[var(--color-border)] dark:border-[var(--color-borderDark)]
-      text-[var(--color-text)] dark:text-[var(--color-textDark)]
-      hover:border-[var(--color-primary)] hover:bg-[var(--color-surface)] dark:hover:bg-[var(--color-surfaceDark)]
+      border-2 border-[var(--current-border)]
+      text-[var(--current-text)]
+      hover:border-[var(--color-primary)] hover:bg-[var(--current-surface)]
       focus:ring-[var(--color-primary)]
     `,
     ghost: `
-      bg-transparent text-[var(--color-text)] dark:text-[var(--color-textDark)]
-      hover:bg-[var(--color-surface)] dark:hover:bg-[var(--color-surfaceDark)]
+      bg-transparent text-[var(--current-text)]
+      hover:bg-[var(--current-surface)]
       focus:ring-[var(--color-primary)]
     `,
     gradient: `

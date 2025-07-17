@@ -156,7 +156,24 @@ export const Body: React.FC<BodyProps> = ({
   // Apply theme with performance optimizations
   useEffect(() => {
     if (selectedTheme) {
-      applyThemeToDocument(selectedTheme);
+      // Create theme with current auto mode configuration
+      const themeToApply = {
+        ...selectedTheme,
+        mode: autoDark ? 'auto' as const : selectedTheme.mode,
+      };
+      
+      applyThemeToDocument(themeToApply);
+      
+      // Listen for system theme changes if auto mode
+      if (autoDark) {
+        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        const handleChange = () => {
+          applyThemeToDocument(themeToApply);
+        };
+        
+        mediaQuery.addEventListener('change', handleChange);
+        return () => mediaQuery.removeEventListener('change', handleChange);
+      }
       
       // Add CSS custom properties for better performance
       const root = document.documentElement;
@@ -176,7 +193,7 @@ export const Body: React.FC<BodyProps> = ({
         root.style.setProperty('--gpu-acceleration', 'none');
       }
     }
-  }, [selectedTheme, autoFeatures, performanceMode]);
+  }, [selectedTheme, autoFeatures, performanceMode, autoDark]);
 
   // Enhanced theme configuration
   const themeConfig = config || (selectedTheme ? {
@@ -205,8 +222,7 @@ export const Body: React.FC<BodyProps> = ({
   // Dynamic container classes with performance optimizations
   const containerClasses = `
     ${getResponsiveClasses()}
-    bg-[var(--color-background)] dark:bg-[var(--color-backgroundDark)]
-    text-[var(--color-text)] dark:text-[var(--color-textDark)]
+    text-[var(--current-text)]
     transition-all duration-[var(--animation-duration)]
     ${performanceMode === 'economy' ? '' : 'transform-gpu'}
     ${className}
@@ -297,7 +313,7 @@ export const Body: React.FC<BodyProps> = ({
         ref={bodyRef}
         className={containerClasses} 
         style={{
-          background: selectedTheme?.gradients.background,
+          background: 'var(--current-gradient-background)',
         }}
         data-theme={theme}
         data-performance={performanceMode}

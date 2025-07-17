@@ -39,9 +39,9 @@ export const Navbar: React.FC<NavbarProps> = ({
   const baseClasses = 'w-full px-4 sm:px-6 lg:px-8 py-3 transition-all duration-300 ease-in-out';
 
   const variantClasses = {
-    default: `border-b border-transparent ${isScrolled ? 'bg-[var(--color-surface)]/80 dark:bg-[var(--color-surfaceDark)]/80 backdrop-blur-md border-[var(--color-border)]/20' : ''}`,
+    default: `border-b border-transparent ${isScrolled ? 'bg-[var(--current-surface)]/80 backdrop-blur-md border-[var(--current-border)]/20' : ''}`,
     glass: 'border-b border-white/10 backdrop-blur-xl',
-    solid: 'bg-[var(--color-surface)] dark:bg-[var(--color-surfaceDark)] border-b border-[var(--color-border)] dark:border-[var(--color-borderDark)]',
+    solid: 'bg-[var(--current-surface)] border-b border-[var(--current-border)]',
   };
 
   const stickyClasses = sticky ? 'sticky top-0 z-50' : '';
@@ -61,7 +61,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         {/* Logo */}
         <div className="flex items-center">
           {typeof logo === 'string' ? (
-            <span className="text-xl font-bold text-[var(--color-text)] dark:text-[var(--color-textDark)]">
+            <span className="text-xl font-bold text-[var(--current-text)]">
               {logo}
             </span>
           ) : (
@@ -78,7 +78,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         <div className="md:hidden">
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="text-[var(--color-textSecondary)] dark:text-[var(--color-textSecondaryDark)] focus:outline-none"
+            className="text-[var(--current-text-secondary)] focus:outline-none"
             aria-label="Toggle menu"
           >
             {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}

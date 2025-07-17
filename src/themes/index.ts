@@ -59,9 +59,9 @@ export const LUCENT_THEMES: Record<string, LucentTheme> = {
       backgroundDark: '#1a1625', // deeper violet
       surface: '#fdf4ff', // fuchsia-50
       surfaceDark: '#2d2640', // better contrast violet
-      text: '#1e1b34', // high-contrast dark
-      textDark: '#f8f4ff', // higher contrast light
-      textSecondary: '#585279', // muted
+      text: '#908ABFFF', // high-contrast dark
+      textDark: '#BAADCEFF', // higher contrast light
+      textSecondary: '#CAC9CEFF', // muted
       textSecondaryDark: '#d1c4e9', // better contrast light
       border: '#e879f9', // fuchsia-400
       borderDark: '#4a4069', // better contrast muted
@@ -93,17 +93,17 @@ export const LUCENT_THEMES: Record<string, LucentTheme> = {
     colors: {
       primary: '#10b981', // emerald-500
       primaryLight: '#34d399', // emerald-400
-      primaryDark: '#059669', // emerald-600
+      primaryDark: '#27483DFF', // emerald-600
       secondary: '#3b82f6', // blue-500
       secondaryLight: '#60a5fa', // blue-400
       secondaryDark: '#2563eb', // blue-600
       accent: '#f59e0b', // amber-500
       background: '#f0fdf4', // emerald-50
-      backgroundDark: '#0a1015', // deeper slate blue
+      backgroundDark: '#495056FF', // deeper slate blue
       surface: '#ecfdf5', // emerald-100
       surfaceDark: '#152025', // better contrast slate blue
-      text: '#064e3b', // emerald-900
-      textDark: '#ecfdf5', // emerald-50
+      text: '#10AD83FF', // emerald-900
+      textDark: '#008A4AFF', // emerald-50
       textSecondary: '#047857', // emerald-700
       textSecondaryDark: '#a7f3d0', // emerald-200
       border: '#a7f3d0', // emerald-200
@@ -145,10 +145,10 @@ export const LUCENT_THEMES: Record<string, LucentTheme> = {
       backgroundDark: '#000000',
       surface: '#1a1a1a',
       surfaceDark: '#1a1a1a',
-      text: '#ffffff',
-      textDark: '#ffffff',
-      textSecondary: '#e6e6e6', // much lighter gray for readability
-      textSecondaryDark: '#e6e6e6',
+      text: '#DCA1A1FF',
+      textDark: '#DDD8D8FF',
+      textSecondary: '#584C4CFF', // much lighter gray for readability
+      textSecondaryDark: '#554747FF',
       border: '#ff0080',
       borderDark: '#ff0080',
       success: '#00ff00',
@@ -188,8 +188,8 @@ export const LUCENT_THEMES: Record<string, LucentTheme> = {
       backgroundDark: '#0f1419', // darker
       surface: '#f8fafc', // slate-50
       surfaceDark: '#1a202c', // darker slate
-      text: '#1f2937', // gray-800
-      textDark: '#f9fafb', // gray-50
+      text: '#77818FFF', // gray-800
+      textDark: '#5B7EA2FF', // gray-50
       textSecondary: '#4b5563', // gray-600
       textSecondaryDark: '#e2e8f0', // much lighter gray
       border: '#e5e7eb', // gray-200
@@ -200,7 +200,7 @@ export const LUCENT_THEMES: Record<string, LucentTheme> = {
       info: '#3b82f6',
     },
     gradients: {
-      primary: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 25%, #e2e8f0 50%, #cbd5e1 75%, #94a3b8 100%)',
+      primary: 'linear-gradient(135deg, #ffffff 0%, #C0C9D2FF 25%, #80AAE0FF 50%, #3F8AE7FF 75%, #0066F5FF 100%)',
       secondary: 'linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%)',
       background: 'linear-gradient(145deg, #ffffff 0%, #f8fafc 30%, #f1f5f9 60%, #e2e8f0 100%)',
       backgroundDark: 'linear-gradient(145deg, #0f1419 0%, #1a202c 30%, #252a3a 60%, #2d3648 100%)',
@@ -274,10 +274,10 @@ export const LUCENT_THEMES: Record<string, LucentTheme> = {
       backgroundDark: '#0c1419', // deeper slate-900
       surface: '#f1f5f9', // slate-100
       surfaceDark: '#1a2332', // better contrast slate-800
-      text: '#0f172a', // slate-900
-      textDark: '#f1f5f9', // slate-100
+      text: '#697286FF', // slate-900
+      textDark: '#4E6C8AFF', // slate-100
       textSecondary: '#475569', // slate-600
-      textSecondaryDark: '#94a3b8', // slate-400
+      textSecondaryDark: '#3A4555FF', // slate-400
       border: '#cbd5e1', // slate-300
       borderDark: '#334155', // slate-700
       success: '#10b981',
@@ -317,7 +317,7 @@ export const LUCENT_THEMES: Record<string, LucentTheme> = {
       backgroundDark: '#1a2e05', // dark olive
       surface: '#f7fee7', // lime-100
       surfaceDark: '#2a3f13', // darker olive
-      text: '#1a2e05', // dark olive
+      text: '#91A47CFF', // dark olive
       textDark: '#ecfccb', // lime-100
       textSecondary: '#365314', // lime-900
       textSecondaryDark: '#a3e635', // lime-400
@@ -859,8 +859,25 @@ export const applyThemeToDocument = (theme: LucentTheme) => {
     energetic: '500ms',
   }[theme.animation || 'smooth']);
 
-  // Apply dark mode class
+  // Apply dark mode class and colors
   const isDark = theme.mode === 'dark' || 
     (theme.mode === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
   root.classList.toggle('dark', isDark);
+  
+  // Apply correct text and background colors based on mode
+  if (isDark) {
+    root.style.setProperty('--current-text', theme.colors.textDark);
+    root.style.setProperty('--current-text-secondary', theme.colors.textSecondaryDark);
+    root.style.setProperty('--current-background', theme.colors.backgroundDark);
+    root.style.setProperty('--current-surface', theme.colors.surfaceDark);
+    root.style.setProperty('--current-border', theme.colors.borderDark);
+    root.style.setProperty('--current-gradient-background', theme.gradients.backgroundDark);
+  } else {
+    root.style.setProperty('--current-text', theme.colors.text);
+    root.style.setProperty('--current-text-secondary', theme.colors.textSecondary);
+    root.style.setProperty('--current-background', theme.colors.background);
+    root.style.setProperty('--current-surface', theme.colors.surface);
+    root.style.setProperty('--current-border', theme.colors.border);
+    root.style.setProperty('--current-gradient-background', theme.gradients.background);
+  }
 };
