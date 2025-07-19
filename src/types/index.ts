@@ -17,6 +17,14 @@ export interface ComponentProps {
   glow?: boolean;
 }
 
+export interface ButtonProps extends ComponentProps {
+  children: React.ReactNode;
+  fullWidth?: boolean;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  type?: 'button' | 'submit' | 'reset';
+  style?: React.CSSProperties;
+}
+
 export interface BodyProps {
   children: React.ReactNode;
   theme?: 'velora' | 'aurora' | 'neon' | 'crystal' | 'obsidian' | 'glacial' | 'military' | 'apple' | 'ocean' | 'sunset' | 'forest' | 'midnight' | 'rose' | 'space' | 'coral' | 'lavender' | 'gold' | 'mint' | 'cherry' | 'electric' | 'sand' | 'ruby' | 'slate' | 'emerald' | 'vintage' | 'custom';

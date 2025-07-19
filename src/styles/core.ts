@@ -110,7 +110,7 @@ export const createGlobalStyles = (_themeName: string) => {
       font-family: var(--font-sans);
       font-feature-settings: "cv11", "ss01";
       background-color: var(--color-background);
-      color: var(--color-text);
+      color: var(--current-text);
       transition: background-color var(--transition-normal), color var(--transition-normal);
     }
 

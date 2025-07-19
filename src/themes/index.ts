@@ -59,9 +59,9 @@ export const LUCENT_THEMES: Record<string, LucentTheme> = {
       backgroundDark: '#1a1625', // deeper violet
       surface: '#fdf4ff', // fuchsia-50
       surfaceDark: '#2d2640', // better contrast violet
-      text: '#908ABFFF', // high-contrast dark
-      textDark: '#BAADCEFF', // higher contrast light
-      textSecondary: '#CAC9CEFF', // muted
+      text: '#1a0d1f', // much higher contrast dark (WCAG AA compliant)
+      textDark: '#f8f4ff', // high contrast light
+      textSecondary: '#4a3b5a', // better contrast muted
       textSecondaryDark: '#d1c4e9', // better contrast light
       border: '#e879f9', // fuchsia-400
       borderDark: '#4a4069', // better contrast muted
@@ -102,8 +102,8 @@ export const LUCENT_THEMES: Record<string, LucentTheme> = {
       backgroundDark: '#495056FF', // deeper slate blue
       surface: '#ecfdf5', // emerald-100
       surfaceDark: '#152025', // better contrast slate blue
-      text: '#10AD83FF', // emerald-900
-      textDark: '#008A4AFF', // emerald-50
+      text: '#064e3b', // emerald-900 (WCAG AA compliant)
+      textDark: '#ecfdf5', // emerald-50
       textSecondary: '#047857', // emerald-700
       textSecondaryDark: '#a7f3d0', // emerald-200
       border: '#a7f3d0', // emerald-200
@@ -145,10 +145,10 @@ export const LUCENT_THEMES: Record<string, LucentTheme> = {
       backgroundDark: '#000000',
       surface: '#1a1a1a',
       surfaceDark: '#1a1a1a',
-      text: '#DCA1A1FF',
-      textDark: '#DDD8D8FF',
-      textSecondary: '#584C4CFF', // much lighter gray for readability
-      textSecondaryDark: '#554747FF',
+      text: '#ffffff', // pure white for maximum contrast on black
+      textDark: '#ffffff', // pure white for maximum contrast
+      textSecondary: '#cccccc', // light gray for better readability  
+      textSecondaryDark: '#cccccc', // light gray for better readability
       border: '#ff0080',
       borderDark: '#ff0080',
       success: '#00ff00',
@@ -188,8 +188,8 @@ export const LUCENT_THEMES: Record<string, LucentTheme> = {
       backgroundDark: '#0f1419', // darker
       surface: '#f8fafc', // slate-50
       surfaceDark: '#1a202c', // darker slate
-      text: '#77818FFF', // gray-800
-      textDark: '#5B7EA2FF', // gray-50
+      text: '#1f2937', // gray-800 (WCAG AA compliant)
+      textDark: '#f9fafb', // gray-50
       textSecondary: '#4b5563', // gray-600
       textSecondaryDark: '#e2e8f0', // much lighter gray
       border: '#e5e7eb', // gray-200
@@ -274,10 +274,10 @@ export const LUCENT_THEMES: Record<string, LucentTheme> = {
       backgroundDark: '#0c1419', // deeper slate-900
       surface: '#f1f5f9', // slate-100
       surfaceDark: '#1a2332', // better contrast slate-800
-      text: '#697286FF', // slate-900
-      textDark: '#4E6C8AFF', // slate-100
+      text: '#0f172a', // slate-900 (WCAG AA compliant)
+      textDark: '#f1f5f9', // slate-100
       textSecondary: '#475569', // slate-600
-      textSecondaryDark: '#3A4555FF', // slate-400
+      textSecondaryDark: '#94a3b8', // slate-400 (better contrast)
       border: '#cbd5e1', // slate-300
       borderDark: '#334155', // slate-700
       success: '#10b981',
@@ -317,7 +317,7 @@ export const LUCENT_THEMES: Record<string, LucentTheme> = {
       backgroundDark: '#1a2e05', // dark olive
       surface: '#f7fee7', // lime-100
       surfaceDark: '#2a3f13', // darker olive
-      text: '#91A47CFF', // dark olive
+      text: '#1a2e05', // dark olive (WCAG AA compliant)
       textDark: '#ecfccb', // lime-100
       textSecondary: '#365314', // lime-900
       textSecondaryDark: '#a3e635', // lime-400
@@ -872,6 +872,13 @@ export const applyThemeToDocument = (theme: LucentTheme) => {
     root.style.setProperty('--current-surface', theme.colors.surfaceDark);
     root.style.setProperty('--current-border', theme.colors.borderDark);
     root.style.setProperty('--current-gradient-background', theme.gradients.backgroundDark);
+    
+    // Backward compatibility: also set --color-text variables
+    root.style.setProperty('--color-text', theme.colors.textDark);
+    root.style.setProperty('--color-textSecondary', theme.colors.textSecondaryDark);
+    root.style.setProperty('--color-background', theme.colors.backgroundDark);
+    root.style.setProperty('--color-surface', theme.colors.surfaceDark);
+    root.style.setProperty('--color-border', theme.colors.borderDark);
   } else {
     root.style.setProperty('--current-text', theme.colors.text);
     root.style.setProperty('--current-text-secondary', theme.colors.textSecondary);
@@ -879,5 +886,12 @@ export const applyThemeToDocument = (theme: LucentTheme) => {
     root.style.setProperty('--current-surface', theme.colors.surface);
     root.style.setProperty('--current-border', theme.colors.border);
     root.style.setProperty('--current-gradient-background', theme.gradients.background);
+    
+    // Backward compatibility: also set --color-text variables
+    root.style.setProperty('--color-text', theme.colors.text);
+    root.style.setProperty('--color-textSecondary', theme.colors.textSecondary);
+    root.style.setProperty('--color-background', theme.colors.background);
+    root.style.setProperty('--color-surface', theme.colors.surface);
+    root.style.setProperty('--color-border', theme.colors.border);
   }
 };

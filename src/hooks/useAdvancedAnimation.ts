@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 
 export type AnimationType = 
   | 'fade' | 'fadeUp' | 'fadeDown' | 'fadeLeft' | 'fadeRight'
@@ -27,6 +27,9 @@ export interface AdvancedAnimationOptions {
   threshold?: number;
   rootMargin?: string;
   stagger?: number;
+  gpu?: boolean; // Enable GPU acceleration
+  performance?: 'auto' | 'high' | 'balanced' | 'economy'; // Performance mode
+  prefersReducedMotion?: boolean; // Respect user preferences
   spring?: {
     stiffness: number;
     damping: number;
@@ -38,13 +41,24 @@ export interface AdvancedAnimationOptions {
   };
   onStart?: () => void;
   onComplete?: () => void;
+  onProgress?: (progress: number) => void;
 }
 
 export const useAdvancedAnimation = (options: AdvancedAnimationOptions) => {
   const ref = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [animationProgress, setAnimationProgress] = useState(0);
   const animationRef = useRef<Animation | null>(null);
+  const performanceRef = useRef<{
+    deviceMemory: number;
+    hardwareConcurrency: number;
+    connectionType: string;
+  }>({
+    deviceMemory: (navigator as any).deviceMemory || 4,
+    hardwareConcurrency: (navigator as any).hardwareConcurrency || 4,
+    connectionType: (navigator as any).connection?.effectiveType || '4g'
+  });
 
   const {
     type,
@@ -58,11 +72,34 @@ export const useAdvancedAnimation = (options: AdvancedAnimationOptions) => {
     threshold = 0.1,
     rootMargin = '0px',
     stagger = 0,
+    gpu = true,
+    performance = 'auto',
+    prefersReducedMotion = false,
     // spring,
     parallax,
     onStart,
-    onComplete
+    onComplete,
+    onProgress
   } = options;
+
+  // Auto-detect performance mode
+  const effectivePerformance = useMemo(() => {
+    if (performance !== 'auto') return performance;
+    
+    const { deviceMemory, hardwareConcurrency, connectionType } = performanceRef.current;
+    
+    if (deviceMemory < 2 || hardwareConcurrency < 2 || connectionType === 'slow-2g') {
+      return 'economy';
+    } else if (deviceMemory >= 8 && hardwareConcurrency >= 8 && connectionType === '4g') {
+      return 'high';
+    }
+    return 'balanced';
+  }, [performance]);
+
+  // Check for reduced motion preference
+  const shouldReduceMotion = useMemo(() => {
+    return prefersReducedMotion || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }, [prefersReducedMotion]);
 
   // Easing curves
   const easingCurves = {
@@ -83,44 +120,58 @@ export const useAdvancedAnimation = (options: AdvancedAnimationOptions) => {
     'quint': 'cubic-bezier(0.23, 1, 0.320, 1)'
   };
 
-  // Animation keyframes
-  const getKeyframes = (animationType: AnimationType) => {
+  // GPU-optimized animation keyframes
+  const getKeyframes = useCallback((animationType: AnimationType) => {
+    // GPU acceleration transforms
+    const gpuTransform = gpu ? 'translateZ(0)' : '';
+    const addGPU = (transform: string) => gpu ? `${transform} ${gpuTransform}` : transform;
+    
+    // Performance mode affects animation complexity (could be used later)
+    // const getComplexity = () => {
+    //   switch (effectivePerformance) {
+    //     case 'economy': return 'low';
+    //     case 'balanced': return 'medium';
+    //     case 'high': return 'high';
+    //     default: return 'medium';
+    //   }
+    // };
+    
     const keyframes: Record<AnimationType, Keyframe[]> = {
       fade: [
-        { opacity: 0 },
-        { opacity: 1 }
+        { opacity: 0, transform: addGPU('') },
+        { opacity: 1, transform: addGPU('') }
       ],
       fadeUp: [
-        { opacity: 0, transform: 'translateY(30px)' },
-        { opacity: 1, transform: 'translateY(0)' }
+        { opacity: 0, transform: addGPU('translateY(30px)') },
+        { opacity: 1, transform: addGPU('translateY(0)') }
       ],
       fadeDown: [
-        { opacity: 0, transform: 'translateY(-30px)' },
-        { opacity: 1, transform: 'translateY(0)' }
+        { opacity: 0, transform: addGPU('translateY(-30px)') },
+        { opacity: 1, transform: addGPU('translateY(0)') }
       ],
       fadeLeft: [
-        { opacity: 0, transform: 'translateX(30px)' },
-        { opacity: 1, transform: 'translateX(0)' }
+        { opacity: 0, transform: addGPU('translateX(30px)') },
+        { opacity: 1, transform: addGPU('translateX(0)') }
       ],
       fadeRight: [
-        { opacity: 0, transform: 'translateX(-30px)' },
-        { opacity: 1, transform: 'translateX(0)' }
+        { opacity: 0, transform: addGPU('translateX(-30px)') },
+        { opacity: 1, transform: addGPU('translateX(0)') }
       ],
       slideUp: [
-        { transform: 'translateY(100%)' },
-        { transform: 'translateY(0)' }
+        { transform: addGPU('translateY(100%)') },
+        { transform: addGPU('translateY(0)') }
       ],
       slideDown: [
-        { transform: 'translateY(-100%)' },
-        { transform: 'translateY(0)' }
+        { transform: addGPU('translateY(-100%)') },
+        { transform: addGPU('translateY(0)') }
       ],
       slideLeft: [
-        { transform: 'translateX(100%)' },
-        { transform: 'translateX(0)' }
+        { transform: addGPU('translateX(100%)') },
+        { transform: addGPU('translateX(0)') }
       ],
       slideRight: [
-        { transform: 'translateX(-100%)' },
-        { transform: 'translateX(0)' }
+        { transform: addGPU('translateX(-100%)') },
+        { transform: addGPU('translateX(0)') }
       ],
       scale: [
         { transform: 'scale(0.8)', opacity: 0 },
@@ -273,32 +324,97 @@ export const useAdvancedAnimation = (options: AdvancedAnimationOptions) => {
     };
 
     return keyframes[animationType] || keyframes.fade;
-  };
+  }, [gpu, effectivePerformance]);
 
-  // Start animation
-  const startAnimation = () => {
-    if (!ref.current || isAnimating) return;
+  // GPU optimization setup
+  const setupGPUOptimization = useCallback(() => {
+    if (!ref.current || !gpu) return;
+
+    const element = ref.current;
+    
+    // Apply GPU acceleration properties
+    element.style.willChange = 'transform, opacity';
+    element.style.backfaceVisibility = 'hidden';
+    element.style.perspective = '1000px';
+    
+    // Economy mode: reduce transform complexity
+    if (effectivePerformance === 'economy') {
+      element.style.transformStyle = 'flat';
+    } else {
+      element.style.transformStyle = 'preserve-3d';
+    }
+  }, [gpu, effectivePerformance]);
+
+  // Performance-aware animation start
+  const startAnimation = useCallback(() => {
+    if (!ref.current || isAnimating || shouldReduceMotion) return;
+
+    // Setup GPU optimization
+    setupGPUOptimization();
 
     setIsAnimating(true);
+    setAnimationProgress(0);
     onStart?.();
 
     const keyframes = getKeyframes(type);
+    
+    // Adjust duration based on performance mode and reduced motion
+    const adjustedDuration = shouldReduceMotion ? 1 : (
+      effectivePerformance === 'economy' ? duration * 0.7 :
+      effectivePerformance === 'high' ? duration * 1.2 : duration
+    );
+
     const timingOptions: KeyframeAnimationOptions = {
-      duration: duration + (stagger || 0),
-      delay,
+      duration: adjustedDuration + (stagger || 0),
+      delay: shouldReduceMotion ? 0 : delay,
       easing: easingCurves[easing],
-      iterations: infinite ? Infinity : 1,
+      iterations: infinite && !shouldReduceMotion ? Infinity : 1,
       direction,
       fill: fillMode
     };
 
     animationRef.current = ref.current.animate(keyframes, timingOptions);
 
+    // Progress tracking
+    const startTime = Date.now();
+    const updateProgress = () => {
+      if (!animationRef.current) return;
+      
+      const elapsed = Date.now() - startTime;
+      const progress = Math.min(elapsed / adjustedDuration, 1);
+      setAnimationProgress(progress);
+      onProgress?.(progress);
+      
+      if (progress < 1 && animationRef.current.playState === 'running') {
+        requestAnimationFrame(updateProgress);
+      }
+    };
+    
+    if (onProgress) {
+      requestAnimationFrame(updateProgress);
+    }
+
     animationRef.current.onfinish = () => {
       setIsAnimating(false);
+      setAnimationProgress(1);
+      
+      // Cleanup GPU optimizations
+      if (ref.current && gpu) {
+        ref.current.style.willChange = 'auto';
+      }
+      
       onComplete?.();
     };
-  };
+
+    animationRef.current.oncancel = () => {
+      setIsAnimating(false);
+      
+      // Cleanup GPU optimizations
+      if (ref.current && gpu) {
+        ref.current.style.willChange = 'auto';
+      }
+    };
+  }, [type, isAnimating, shouldReduceMotion, setupGPUOptimization, getKeyframes, effectivePerformance, duration, stagger, delay, easing, infinite, direction, fillMode, onStart, onProgress, onComplete, gpu]);
 
   // Handle intersection observer
   useEffect(() => {
@@ -359,7 +475,11 @@ export const useAdvancedAnimation = (options: AdvancedAnimationOptions) => {
     ref,
     isVisible,
     isAnimating,
+    animationProgress,
+    effectivePerformance,
+    shouldReduceMotion,
     triggerAnimation,
-    stopAnimation
+    stopAnimation,
+    setupGPUOptimization
   };
 };

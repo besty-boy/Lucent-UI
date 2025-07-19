@@ -86,7 +86,7 @@ export const PureBody: React.FC<BodyProps> = ({
     minHeight: responsive ? '100vh' : 'auto',
     width: '100%',
     backgroundColor: 'var(--color-background)',
-    color: 'var(--color-text)',
+    color: 'var(--current-text)',
     fontFamily: 'var(--font-sans)',
     lineHeight: 1.6,
     transition: 'all var(--transition-normal)',

@@ -1,6 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 
 export interface MicroInteractionOptions {
+  gpu?: boolean; // Enable GPU acceleration
+  performance?: 'auto' | 'high' | 'balanced' | 'economy'; // Performance mode
+  prefersReducedMotion?: boolean; // Respect user preferences
   hover?: {
     scale?: number;
     rotate?: number;
@@ -56,8 +59,12 @@ export const useMicroInteractions = (options: MicroInteractionOptions = {}) => {
   const [isActive, setIsActive] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [mousePosition] = useState({ x: 0, y: 0 });
+  const animationFrameRef = useRef<number>();
 
   const {
+    gpu = true,
+    performance = 'auto',
+    prefersReducedMotion = false,
     hover = {},
     focus = {},
     active = {},
@@ -66,6 +73,61 @@ export const useMicroInteractions = (options: MicroInteractionOptions = {}) => {
     ripple = {},
     tilt = {}
   } = options;
+
+  // Performance detection
+  const effectivePerformance = useMemo(() => {
+    if (performance !== 'auto') return performance;
+    
+    const deviceMemory = (navigator as any).deviceMemory || 4;
+    const hardwareConcurrency = (navigator as any).hardwareConcurrency || 4;
+    const connectionType = (navigator as any).connection?.effectiveType || '4g';
+    
+    if (deviceMemory < 2 || hardwareConcurrency < 2 || connectionType === 'slow-2g') {
+      return 'economy';
+    } else if (deviceMemory >= 8 && hardwareConcurrency >= 8 && connectionType === '4g') {
+      return 'high';
+    }
+    return 'balanced';
+  }, [performance]);
+
+  // Check for reduced motion preference
+  const shouldReduceMotion = useMemo(() => {
+    return prefersReducedMotion || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }, [prefersReducedMotion]);
+
+  // GPU optimization setup
+  const setupGPUOptimization = useCallback(() => {
+    if (!ref.current || !gpu) return;
+
+    const element = ref.current;
+    
+    // Apply GPU acceleration properties
+    element.style.willChange = 'transform, opacity, filter';
+    element.style.backfaceVisibility = 'hidden';
+    element.style.perspective = '1000px';
+    
+    // Adjust based on performance mode
+    if (effectivePerformance === 'economy') {
+      element.style.transformStyle = 'flat';
+    } else {
+      element.style.transformStyle = 'preserve-3d';
+    }
+  }, [gpu, effectivePerformance]);
+
+  // Initialize GPU optimization
+  useEffect(() => {
+    setupGPUOptimization();
+    
+    return () => {
+      // Cleanup
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+      if (ref.current && gpu) {
+        ref.current.style.willChange = 'auto';
+      }
+    };
+  }, [setupGPUOptimization, gpu]);
 
   // Default values
   const hoverDefaults = {
@@ -130,25 +192,49 @@ export const useMicroInteractions = (options: MicroInteractionOptions = {}) => {
     ...tilt
   };
 
-  // Apply hover effects
-  useEffect(() => {
-    if (!ref.current) return;
+  // Performance-aware hover effects
+  const applyHoverEffects = useCallback(() => {
+    if (!ref.current || shouldReduceMotion) return;
 
     const element = ref.current;
-    const baseTransform = element.style.transform || '';
+    const gpuTransform = gpu ? 'translateZ(0)' : '';
+    
+    // Adjust effects based on performance mode
+    const getEffectScale = () => {
+      switch (effectivePerformance) {
+        case 'economy': return 0.5;
+        case 'balanced': return 0.8;
+        case 'high': return 1.0;
+        default: return 0.8;
+      }
+    };
+    
+    const effectScale = getEffectScale();
+    const adjustedDuration = shouldReduceMotion ? 1 : hoverDefaults.duration * effectScale;
 
     if (isHovered) {
-      const transform = `${baseTransform} scale(${hoverDefaults.scale}) rotate(${hoverDefaults.rotate}deg) translateY(${hoverDefaults.translateY}px)`;
-      const filter = `brightness(${hoverDefaults.brightness}) saturate(${hoverDefaults.saturate}) blur(${hoverDefaults.blur}px)`;
+      const scale = 1 + (hoverDefaults.scale - 1) * effectScale;
+      const translateY = hoverDefaults.translateY * effectScale;
+      const brightness = 1 + (hoverDefaults.brightness - 1) * effectScale;
+      
+      const transform = `scale(${scale}) rotate(${hoverDefaults.rotate}deg) translateY(${translateY}px) ${gpuTransform}`;
+      const filter = effectivePerformance !== 'economy' ? 
+        `brightness(${brightness}) saturate(${hoverDefaults.saturate}) blur(${hoverDefaults.blur}px)` : 
+        'none';
       
       element.style.transform = transform;
       element.style.filter = filter;
-      element.style.transition = `all ${hoverDefaults.duration}ms ${hoverDefaults.easing}`;
+      element.style.transition = `all ${adjustedDuration}ms ${hoverDefaults.easing}`;
     } else {
-      element.style.transform = baseTransform;
+      element.style.transform = gpu ? `translateZ(0)` : '';
       element.style.filter = 'none';
     }
-  }, [isHovered, hoverDefaults]);
+  }, [isHovered, hoverDefaults, shouldReduceMotion, effectivePerformance, gpu]);
+
+  // Apply hover effects
+  useEffect(() => {
+    applyHoverEffects();
+  }, [applyHoverEffects]);
 
   // Apply focus effects
   useEffect(() => {

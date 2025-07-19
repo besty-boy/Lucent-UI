@@ -56,8 +56,8 @@ export const Text: React.FC<TextProps> = ({
     }
     
     const colorMap = {
-      default: 'var(--color-text)',
-      muted: 'var(--color-textSecondary)',
+      default: 'var(--current-text)',
+      muted: 'var(--current-text-secondary)',
       primary: 'var(--color-primary)',
       secondary: 'var(--color-secondary)'
     };

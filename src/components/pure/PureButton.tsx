@@ -100,7 +100,7 @@ export const PureButton: React.FC<PureButtonProps> = ({
       },
       ghost: {
         backgroundColor: isHovered ? 'var(--color-surface)' : 'transparent',
-        color: 'var(--color-text)',
+        color: 'var(--current-text)',
         border: 'none',
       },
       outline: {
@@ -119,7 +119,7 @@ export const PureButton: React.FC<PureButtonProps> = ({
         backgroundColor: 'rgba(255, 255, 255, 0.1)',
         backdropFilter: 'blur(10px)',
         border: '1px solid rgba(255, 255, 255, 0.2)',
-        color: 'var(--color-text)',
+        color: 'var(--current-text)',
         boxShadow: isHovered 
           ? '0 8px 32px rgba(0, 0, 0, 0.2)' 
           : '0 4px 12px rgba(0, 0, 0, 0.15)',

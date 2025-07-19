@@ -95,7 +95,7 @@ export const PureNavbar: React.FC<PureNavbarProps> = ({
     alignItems: 'center',
     fontSize: '1.25rem',
     fontWeight: 700,
-    color: variant === 'solid' ? 'white' : 'var(--color-text)',
+    color: variant === 'solid' ? 'white' : 'var(--current-text)',
     textDecoration: 'none',
     transition: 'all 0.2s ease',
   });

@@ -11,6 +11,8 @@ export * from './components/premium/AnimatedCard';
 export * from './components/premium/MagicButton';
 export * from './components/premium/FluidLayout';
 export * from './components/premium/SmartContainer';
+export * from './components/premium/UltraPerformantButton';
+export * from './components/premium/PerformanceMonitor';
 
 // DSL
 export * from './dsl';
