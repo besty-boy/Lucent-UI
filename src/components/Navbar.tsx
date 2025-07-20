@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { cn } from '../utils';
 import { Menu, X } from 'lucide-react';
 import { ComponentProps } from '../types';
+import { useAccessibility } from '../hooks/useAccessibility';
+import { useKeyboardNavigation, useFocusTrap } from '../hooks/useKeyboardNavigation';
 
 type NavbarVariant = 'default' | 'glass' | 'solid';
 
@@ -11,6 +13,9 @@ interface NavbarProps extends Omit<ComponentProps, 'variant'> {
   className?: string;
   sticky?: boolean;
   variant?: NavbarVariant;
+  ariaLabel?: string;
+  logoHref?: string;
+  onMenuToggle?: (open: boolean) => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -21,9 +26,33 @@ export const Navbar: React.FC<NavbarProps> = ({
   variant = 'default',
   corner,
   shadow,
+  ariaLabel = 'Main navigation',
+  logoHref = '/',
+  onMenuToggle,
 }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  
+  // Accessibility hooks
+  const { ariaUtils, announce, preferences } = useAccessibility();
+  const { containerRef } = useKeyboardNavigation({
+    enableArrowKeys: true,
+    orientation: 'horizontal',
+    onEscape: () => handleMenuToggle(false)
+  });
+  const focusTrapRef = useFocusTrap(menuOpen);
+  
+  // Generate unique IDs for ARIA
+  const menuId = ariaUtils.generateId('navbar-menu');
+  const menuButtonId = ariaUtils.generateId('navbar-menu-button');
+
+  // Handle menu toggle with accessibility announcements
+  const handleMenuToggle = (open?: boolean) => {
+    const newMenuOpen = open !== undefined ? open : !menuOpen;
+    setMenuOpen(newMenuOpen);
+    onMenuToggle?.(newMenuOpen);
+    announce(`Menu ${newMenuOpen ? 'opened' : 'closed'}`);
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -35,6 +64,18 @@ export const Navbar: React.FC<NavbarProps> = ({
       return () => window.removeEventListener('scroll', handleScroll);
     }
   }, []);
+
+  // Close menu on escape key
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && menuOpen) {
+        handleMenuToggle(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, [menuOpen]);
 
   const baseClasses = 'w-full px-4 sm:px-6 lg:px-8 py-3 transition-all duration-300 ease-in-out';
 
@@ -57,41 +98,71 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <header className={navbarClasses}>
-      <div className="max-w-7xl mx-auto flex items-center justify-between">
+      <nav 
+        ref={containerRef}
+        className="max-w-7xl mx-auto flex items-center justify-between"
+        role="navigation"
+        aria-label={ariaLabel}
+      >
         {/* Logo */}
         <div className="flex items-center">
           {typeof logo === 'string' ? (
-            <span className="text-xl font-bold text-[var(--current-text)]">
+            <a 
+              href={logoHref}
+              className="text-xl font-bold text-[var(--current-text)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] rounded"
+              aria-label="Home"
+            >
               {logo}
-            </span>
+            </a>
           ) : (
-            logo
+            <a 
+              href={logoHref}
+              className="focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] rounded"
+              aria-label="Home"
+            >
+              {logo}
+            </a>
           )}
         </div>
 
         {/* Desktop Nav */}
-        <div className="hidden md:flex items-center space-x-8">
+        <div className="hidden md:flex items-center space-x-8" role="menubar">
           {children}
         </div>
 
         {/* Mobile Menu Button */}
         <div className="md:hidden">
           <button
-            onClick={() => setMenuOpen(!menuOpen)}
-            className="text-[var(--current-text-secondary)] focus:outline-none"
-            aria-label="Toggle menu"
+            id={menuButtonId}
+            onClick={() => handleMenuToggle()}
+            className={cn(
+              "text-[var(--current-text-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] rounded p-2",
+              preferences.prefersReducedMotion ? 'transition-none' : 'transition-colors duration-200'
+            )}
+            aria-label="Toggle navigation menu"
+            aria-controls={menuId}
+            aria-expanded={menuOpen}
+            aria-haspopup="true"
           >
             {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
         </div>
-      </div>
+      </nav>
 
       {/* Mobile Menu */}
-      <div className={cn(
-        'md:hidden overflow-hidden transition-all duration-500 ease-in-out',
-        menuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
-      )}>
-        <div className="mt-4 space-y-4 px-4 pb-4">
+      <div 
+        id={menuId}
+        ref={focusTrapRef as React.RefObject<HTMLDivElement>}
+        className={cn(
+          'md:hidden overflow-hidden',
+          preferences.prefersReducedMotion ? '' : 'transition-all duration-500 ease-in-out',
+          menuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+        )}
+        role="menu"
+        aria-labelledby={menuButtonId}
+        aria-hidden={!menuOpen}
+      >
+        <div className="mt-4 space-y-4 px-4 pb-4" role="none">
           {children}
         </div>
       </div>

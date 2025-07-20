@@ -2,12 +2,19 @@ import React, { forwardRef } from 'react';
 import { ComponentProps } from '../types';
 import { cn } from '../utils';
 import { Loader2 } from 'lucide-react';
+import { useAccessibility } from '../hooks/useAccessibility';
 
 interface ButtonProps extends ComponentProps, React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
   fullWidth?: boolean;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
+  ariaLabel?: string;
+  ariaDescribedBy?: string;
+  hasPopup?: boolean | 'menu' | 'listbox' | 'tree' | 'grid' | 'dialog';
+  pressed?: boolean;
+  expanded?: boolean;
+  controls?: string;
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
@@ -23,9 +30,29 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
   children,
   leftIcon,
   rightIcon,
+  ariaLabel,
+  ariaDescribedBy,
+  hasPopup,
+  pressed,
+  expanded,
+  controls,
   ...props
 }, ref) => {
   const [styles, setStyles] = React.useState<React.CSSProperties>({});
+  const { ariaUtils, announce, preferences } = useAccessibility();
+  
+  // Generate accessible button label
+  const buttonLabel = ariaLabel || (typeof children === 'string' ? children : 'Button');
+  
+  // Get ARIA attributes
+  const ariaAttributes = ariaUtils.getButtonAttributes(buttonLabel, {
+    disabled: disabled || loading,
+    pressed,
+    expanded,
+    hasPopup,
+    controls,
+    describedBy: ariaDescribedBy
+  });
 
   React.useEffect(() => {
     const newStyles: React.CSSProperties = {};
@@ -51,12 +78,25 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
     return `drop-shadow-[0_0_12px_rgba(${glowColorVar},0.3)] hover:drop-shadow-[0_0_20px_rgba(${glowColorVar},0.5)]`;
   };
 
+  // Handle button click with announcement
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    if (loading || disabled) return;
+    
+    // Announce state changes for screen readers
+    if (pressed !== undefined) {
+      announce(`Button ${pressed ? 'pressed' : 'not pressed'}`);
+    }
+    
+    props.onClick?.(event);
+  };
+
   const baseStyles = `
     inline-flex items-center justify-center gap-2 font-semibold rounded-md
     transition-all duration-[var(--animation-duration)] ease-in-out
-    focus:outline-none focus:ring-2 focus:ring-offset-2
+    focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-opacity-50
     active:scale-95
     ${getShadow()} ${getGlow()}
+    ${preferences.prefersReducedMotion ? 'transition-none transform-none' : ''}
   `;
 
   const variants = {
@@ -119,6 +159,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
         className
       )}
       disabled={disabled || loading}
+      onClick={handleClick}
+      {...ariaAttributes}
       {...props}
     >
       {loading && <Loader2 className="h-4 w-4 animate-spin" />}

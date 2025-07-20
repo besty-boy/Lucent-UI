@@ -39,6 +39,7 @@ export interface BodyProps {
     author?: string;
     robots?: string;
     siteName?: string;
+    images?: string[];
   };
 }
 
