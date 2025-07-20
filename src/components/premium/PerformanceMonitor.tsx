@@ -23,11 +23,6 @@ export const PerformanceMonitor: React.FC<PerformanceMonitorProps> = ({
   const [memoryHistory, setMemoryHistory] = useState<number[]>([]);
   const [isExpanded, setIsExpanded] = useState(false);
 
-  // Hide in production unless explicitly enabled
-  if (process.env.NODE_ENV === 'production' && !showInProduction) {
-    return null;
-  }
-
   // Update history
   useEffect(() => {
     const interval = setInterval(() => {
@@ -48,6 +43,11 @@ export const PerformanceMonitor: React.FC<PerformanceMonitorProps> = ({
     };
     return positions[position];
   }, [position]);
+
+  // Hide in production unless explicitly enabled
+  if (process.env.NODE_ENV === 'production' && !showInProduction) {
+    return null;
+  }
 
   // Performance color coding
   const getPerformanceColor = (value: number, type: 'fps' | 'memory') => {

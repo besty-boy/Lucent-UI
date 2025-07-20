@@ -3,6 +3,13 @@ export { useAnimation } from './useAnimation';
 export { useOptimizedImage } from './useOptimizedImage';
 export { useDevice } from './useDevice';
 
+// Core Body hooks (new refactored)
+export { useDeviceCapabilities } from './useDeviceCapabilities';
+export { useSEOManager } from './useSEOManager';
+export { useThemeApplication } from './useThemeApplication';
+export { useResponsiveStyles } from './useResponsiveStyles';
+export { useGlobalStyles } from './useGlobalStyles';
+
 // Advanced hooks
 export { useAdvancedAnimation } from './useAdvancedAnimation';
 export { useMicroInteractions } from './useMicroInteractions';
@@ -16,3 +23,4 @@ export type { AnimationType, EasingType, AdvancedAnimationOptions } from './useA
 export type { MicroInteractionOptions } from './useMicroInteractions';
 export type { ResponsiveBreakpoints, ResponsiveConfig } from './useAdvancedResponsive';
 export type { DynamicThemeConfig, ThemeContext, DynamicTheme } from './useDynamicTheme';
+export type { DeviceCapabilities } from './useDeviceCapabilities';

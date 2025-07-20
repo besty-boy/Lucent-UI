@@ -222,28 +222,31 @@ export const useAdvancedResponsive = (config: Partial<ResponsiveConfig> = {}) =>
     };
   }, [updateResponsiveState]);
 
-  // Container query hook
-  const useContainerQuery = useCallback((ref: React.RefObject<HTMLElement>) => {
-    const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
+  // Container query utility - returns proper hook factory to avoid hook rule violations  
+  const createContainerQuery = useCallback(() => {
+    // This function creates a hook that can be used in components
+    return function useContainerQuery(ref: React.RefObject<HTMLElement>) {
+      const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
 
-    useEffect(() => {
-      if (!containerQueries || !ref.current) return;
+      useEffect(() => {
+        if (!containerQueries || !ref.current) return;
 
-      const observer = new ResizeObserver(entries => {
-        const entry = entries[0];
-        if (entry) {
-          setContainerSize({
-            width: entry.contentRect.width,
-            height: entry.contentRect.height
-          });
-        }
-      });
+        const observer = new ResizeObserver(entries => {
+          const entry = entries[0];
+          if (entry) {
+            setContainerSize({
+              width: entry.contentRect.width,
+              height: entry.contentRect.height
+            });
+          }
+        });
 
-      observer.observe(ref.current);
-      return () => observer.disconnect();
-    }, [ref]);
+        observer.observe(ref.current);
+        return () => observer.disconnect();
+      }, [ref]);
 
-    return containerSize;
+      return containerSize;
+    };
   }, [containerQueries]);
 
   // Responsive value selector
@@ -382,7 +385,7 @@ export const useAdvancedResponsive = (config: Partial<ResponsiveConfig> = {}) =>
   return {
     ...responsiveState,
     ...memoizedValues,
-    useContainerQuery,
+    createContainerQuery,
     getResponsiveValue,
     getAdaptiveImageProps,
     getTouchOptimizedProps,

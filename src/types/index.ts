@@ -82,3 +82,36 @@ export interface DeviceInfo {
   orientation: 'portrait' | 'landscape';
   touchSupport: boolean;
 }
+
+// Enhanced device capabilities types
+export interface DeviceCapabilities {
+  prefersReducedMotion: boolean;
+  deviceMemory: number;
+  connectionType: string;
+  darkModeSupported: boolean;
+  performanceMode: 'high' | 'balanced' | 'economy';
+}
+
+// Navigator extensions (typed)
+export interface ExtendedNavigator extends Navigator {
+  deviceMemory?: number;
+  connection?: {
+    effectiveType?: '2g' | '3g' | '4g' | 'slow-2g';
+    downlink?: number;
+    rtt?: number;
+  };
+}
+
+// DOM element with custom properties
+export interface ElementWithCustomProps extends HTMLElement {
+  [key: string]: unknown;
+}
+
+// Generic event handler type
+export type EventHandler<T = Event> = (event: T) => void;
+
+// Generic ref type for React components
+export type ComponentRef<T = HTMLElement> = React.RefObject<T>;
+
+// Hook dependency array type
+export type HookDependencies = React.DependencyList;

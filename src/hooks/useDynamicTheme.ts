@@ -154,7 +154,7 @@ export const useDynamicTheme = (config: DynamicThemeConfig = {}) => {
           level: battery.level * 100,
           charging: battery.charging
         };
-      } catch (error) {
+      } catch (_error) {
         console.warn('Battery API not available');
       }
     }
@@ -174,7 +174,7 @@ export const useDynamicTheme = (config: DynamicThemeConfig = {}) => {
             else resolve('dark');
           };
           sensor.start();
-        } catch (error) {
+        } catch (_error) {
           console.warn('Ambient Light Sensor not available');
           resolve('bright');
         }
